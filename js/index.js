@@ -14,7 +14,8 @@ function setup() {
 }
 function loop() {
 	// clear everything
-	ctx.clearRect(-canvas.width/2, -canvas.height/2, canvas.width, canvas.height);
+	ctx.fillStyle=colors.background;
+	ctx.fillRect(-canvas.width/2, -canvas.height/2, canvas.width, canvas.height);
 
 	// update all states
 	for(let idx in components) components[idx].update();

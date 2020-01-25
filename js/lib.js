@@ -15,7 +15,8 @@ let colors = (function() {
 	];
 
 	return ({
-		background:"rgb(223,214,215)",
+		// background:`hsl(${centerHue}, 30%, 15%)`,
+		background:"#EEEEE9",
 		stroke:"rgb(36,70,43)",
 		fills:fillArr,
 		getFill: function() {
