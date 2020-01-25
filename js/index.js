@@ -31,7 +31,7 @@ let colors = (function() {
 let components = [];
 
 class Component {
-	pos = {x:0, y:0};
+	pos = {x:0, y:0, rot:0};
 	// pos: {x:, y:}, args:{val1:, val2:, ...}
 	constructor(pos, args) { 
 		this.pos = pos;
@@ -39,6 +39,13 @@ class Component {
 
 	update = function() {};
 	draw = function() {};
+	doDraw = function() {
+		ctx.save();
+		ctx.translate(this.pos.x, this.pos.y);
+		ctx.rotate(this.pos.rot);
+		this.draw();
+		ctx.restore();
+	};
 }
 
 class Box extends Component {
@@ -48,7 +55,7 @@ class Box extends Component {
 		this.width=args.width;
 	}
 	draw = function() {
-		ctx.fillRect(this.pos.x, this.pos.y, this.width, this.width);
+		ctx.fillRect(0, 0, this.width, this.width);
 	}
 
 
@@ -76,28 +83,28 @@ function makePath(vertices, disp, closed) {
 	}
 	ctx.restore();
 }
-class PolyBlob extends Component {
-	// outerVerts = [];
-	// innerVerts = [];
-	// polys = [];
+class StackedQuads extends Component {
+	quads = [];
+	numQuads = 6;
 
 	constructor(pos, args) {
 		super(pos, {});
+		this.numQuads = args.numQuads;
 
-		this.outerVerts = [];
-		this.innerVerts = [];
-		this.polys = [];
-
-		let numVerts = 7;
-		for(let i=0; i<numVerts; i++) {
-			let angle = (2*Math.PI / numVerts)*i;
-			this.outerVerts.push({
-				x: 50*Math.cos(angle),
-				y: 50*Math.sin(angle),
+		for(let i=0; i<this.numQuads; i++) {
+			quads.push({
+				angle:(2*Math.PI/this.numQuads)*i,
+				width:25,
+				height:50,
 			});
 		}
 	}
 	draw = function() {
+		for(let i=0; i<quads.length; i++) {
+			ctx.save();
+			ctx.rotate()
+			quads[i]
+		}
 		makePath(this.outerVerts, this.pos, true);
 		ctx.fill();
 	}
@@ -149,14 +156,14 @@ function loop() {
 	for(let idx in components) components[idx].update();
 
 	// draw everything
-	for(let idx in components) components[idx].draw();
+	for(let idx in components) components[idx].doDraw();
 
 	// do it again
 	window.requestAnimationFrame(loop);
 }
 
-components.push(new PolyBlob({x:-100, y:-100}, {width: 50}));
-components.push(new RandomShape({x:0, y: 0}, {vertices: 10}));
-// components.push(new Box({x:0, y:0}, {width: 50}));
+// components.push(new StackedQuads({x:-100, y:-100}, {numQuads: 6}));
+// components.push(new RandomShape({x:0, y: 0}, {vertices: 10}));
+components.push(new Box({x:100, y:100, rot:Math.PI/4}, {width: 50}));
 setup();
 
