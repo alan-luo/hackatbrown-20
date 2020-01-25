@@ -12,10 +12,15 @@
 <script>
 	let canvas = document.getElementById("canvas");
 	let ctx = canvas.getContext("2d");
+	ctx.translate(250, 250);
 
 	let controllerOptions = {enableGestures: true};
 
-	let myVal = 0;
+	let myPos = {
+		x:0, 
+		y:0,
+		z:0,
+	};
 
 	Leap.loop(controllerOptions, function(frame) {
 		// if (paused) return; // skip this update
@@ -23,16 +28,19 @@
 		if(frame.hands.length > 0) {
 			let hand = frame.hands[0];
 
-			myVal += hand.palmVelocity[0] / 100;
+			myPos.x += hand.palmVelocity[0] / 100;
+			myPos.z += hand.palmVelocity[1] / 100;
+			myPos.y += hand.palmVelocity[2] / 100;
 			// myVel = hand.palmVelocity;
 		}
 
 	});
 
 	function loop() {
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.clearRect(-1000, -1000, 2000, 2000);
 
-		ctx.fillRect(myVal, 250, 50, 50);
+		width = 50*(1-myPos.z/100);
+		ctx.fillRect(myPos.x, myPos.y, width, width);
 
 		window.requestAnimationFrame(loop);
 	}
