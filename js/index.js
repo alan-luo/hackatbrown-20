@@ -16,7 +16,7 @@ function makeComponent() {
 	}
 }
 
-component.push(makeComponent());
+components.push(makeComponent());
 
 function setup() {
 	loop();
