@@ -3,6 +3,7 @@ let ctx = canvas.getContext("2d");
 
 console.log(canvas.width, canvas.height);
 
+let components = [];
 function makeComponent() {
 	return {
 		props: {
@@ -14,6 +15,8 @@ function makeComponent() {
 		},
 	}
 }
+
+component.push(makeComponent());
 
 function setup() {
 	loop();
