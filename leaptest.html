@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="./js/leap.min.js"></script>
+	<title>Leap Hello</title>
+</head>
+<body>
+<p id="value">0</p>
+
+<canvas id="canvas" width="500" height="500"></canvas>
+
+<script>
+	let canvas = document.getElementById("canvas");
+	let ctx = canvas.getContext("2d");
+
+	let controllerOptions = {enableGestures: true};
+
+	let myVal = 0;
+
+	Leap.loop(controllerOptions, function(frame) {
+		// if (paused) return; // skip this update
+
+		if(frame.hands.length > 0) {
+			let hand = frame.hands[0];
+
+			myVal += hand.palmVelocity[0] / 100;
+			// myVel = hand.palmVelocity;
+		}
+
+	});
+
+	function loop() {
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+		ctx.fillRect(myVal, 250, 50, 50);
+
+		window.requestAnimationFrame(loop);
+	}
+	loop();
+</script>
+</body>
+</html>
