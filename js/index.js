@@ -29,7 +29,7 @@ function loop() {
 		component.draw();
 	}
 
-	window.requestAnimationFrame();
+	window.requestAnimationFrame(loop);
 }
 
 setup();
