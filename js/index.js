@@ -25,7 +25,7 @@ function setup() {
 function loop() {
 	ctx.clearRect(canvas.width, canvas.height);
 
-	for(component in components) {
+	for(let component in components) {
 		component.draw();
 	}
 
