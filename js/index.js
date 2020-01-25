@@ -1,43 +1,37 @@
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
+// generate colors
+let colors = (function() {
+	colorIndex = 0;
+	fillArr = [
+		"rgb(191,249,227)",
+		"rgb(8,79,81)",
+		"rgb(179,161,157)",
+		"rgb(213,178,115)",
+		"rgb(32,63,84)",
+		"rgb(144,131,76)",
+	];
+
+	return ({
+		background:"rgb(223,214,215)",
+		stroke:"rgb(93,70,43)",
+		fills:fillArr,
+		getFill: function() {
+			colorIndex = (colorIndex+1) % fillArr.length;
+			return fillArr[colorIndex];
+		},
+		setIndex: function(index) {
+			colorIndex = index % fillArr.length;
+		}
+	});
+})();
+
 
 let components = [];
-function makeComponent(type, args) {
-	if (type == "shape1"){
-		
-		let xVal = new Array(args.vertices);
-		let yVal = new Array(args.vertices);
 
-
-		for (let i = 0; i < args.vertices; i++) {
-			let radius = 50 + Math.random()*100;
-			xVal[i] = Math.cos((36*i)*Math.PI/180)*radius;
-			yVal[i] = Math.sin((36*i)*Math.PI/180)*radius;
-		}
-
-		return({
-			type: "shape1",
-			props: args,
-			update: function(){
-
-			},
-			draw: function(){
-
-				ctx.beginPath();
-				for (let j = 0; j < 10; j++) {
-					ctx.lineTo(xVal[j], yVal[j]);
-				}
-				ctx.closePath();
-				ctx.stroke();
-
-			}
-		})
-
-	}
-}
 class Component {
-	pos = {x:0, y:0};
+	pos = {x:0, y:0, rot:0};
 	// pos: {x:, y:}, args:{val1:, val2:, ...}
 	constructor(pos, args) { 
 		this.pos = pos;
@@ -45,6 +39,13 @@ class Component {
 
 	update = function() {};
 	draw = function() {};
+	doDraw = function() {
+		ctx.save();
+		ctx.translate(this.pos.x, this.pos.y);
+		ctx.rotate(this.pos.rot);
+		this.draw();
+		ctx.restore();
+	};
 }
 
 class Box extends Component {
@@ -54,10 +55,59 @@ class Box extends Component {
 		this.width=args.width;
 	}
 	draw = function() {
-		ctx.fillRect(this.pos.x, this.pos.y, this.width, this.width);
+		ctx.fillRect(0, 0, this.width, this.width);
 	}
 
 
+}
+/** usage: adds the list of vertices to the working path
+  - vertices: [{x:, y:,}, {x:, y:,}, ...]
+  - disp: {x:, y:,} displacement from origin
+  - closed: bool (when true, adds first vertex to end of path)
+
+  - note: doesn't fill or draw anything (do this yourself) 
+**/
+function makePath(vertices, disp, closed) {
+	ctx.save();
+	ctx.translate(disp.x, disp.y);
+
+	ctx.beginPath();
+	ctx.moveTo(vertices[0].x, vertices[0].y);
+
+	for(let i=1; i<vertices.length; i++) {
+		ctx.lineTo(vertices[i].x, vertices[i].y)
+	} 
+	if(closed) {
+		let myV = vertices[vertices.length-1];
+		ctx.lineTo(myV.x, myV.y);
+	}
+	ctx.restore();
+}
+class StackedQuads extends Component {
+	quads = [];
+	numQuads = 6;
+
+	constructor(pos, args) {
+		super(pos, {});
+		this.numQuads = args.numQuads;
+
+		for(let i=0; i<this.numQuads; i++) {
+			quads.push({
+				angle:(2*Math.PI/this.numQuads)*i,
+				width:25,
+				height:50,
+			});
+		}
+	}
+	draw = function() {
+		for(let i=0; i<quads.length; i++) {
+			ctx.save();
+			ctx.rotate()
+			quads[i]
+		}
+		makePath(this.outerVerts, this.pos, true);
+		ctx.fill();
+	}
 }
 
 class RandomShape extends Component {
@@ -74,8 +124,8 @@ class RandomShape extends Component {
 
 		for (let i = 0; i < this.vertices; i++) {
 			let radius = 50 + Math.random()*30;
-			this.xVal[i] = this.pos.x + Math.cos((360*i/this.vertices)*Math.PI/180)*radius;
-			this.yVal[i] = this.pos.y + Math.sin((360*i/this.vertices)*Math.PI/180)*radius;
+			this.xVal[i] = Math.cos((360*i/this.vertices)*Math.PI/180)*radius;
+			this.yVal[i] = Math.sin((360*i/this.vertices)*Math.PI/180)*radius;
 		}
 		
 	}
@@ -155,13 +205,13 @@ function setup() {
 
 function loop() {
 	// clear everything
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	ctx.clearRect(-canvas.width/2, -canvas.height/2, canvas.width, canvas.height);
 
 	// update all states
 	for(let idx in components) components[idx].update();
 
 	// draw everything
-	for(let idx in components) components[idx].draw();
+	for(let idx in components) components[idx].doDraw();
 
 	// do it again
 	window.requestAnimationFrame(loop);
@@ -169,13 +219,14 @@ function loop() {
 
 //components.push(makeComponent("box", {x:0, y:0}));
 //components.push(new RandomShape({x:0, y: 0}, {vertices: 10}));
-components.push(new RandomShape({x:0, y: 0}, {vertices: 8}));
-components.push(new RandomShape({x:0, y: 0}, {vertices: 6}));
+components.push(new RandomShape({x:125, y: 125, rot: Math.PI/3}, {vertices: 8}));
+components.push(new RandomShape({x:10, y: -10, rot:Math.PI}, {vertices: 6}));
 
-components.push(new RandomShape({x:0, y: 0}, {vertices: 7}));
-components.push(new RandomShape({x:0, y: 0}, {vertices: 5}));
-// components.push(new RandomShape({x:+125, y: -125}, {vertices: 16}));
-// components.push(new RandomShape({x:-125, y: +125}, {vertices: 22}));
+components.push(new RandomShape({x:-200, y: 20, rot: Math.PI/6}, {vertices: 7}));
+components.push(new RandomShape({x:100, y: -200, rot: Math.PI/3}, {vertices: 5}));
 
-//components.push(new Box({x:0, y:0}, {width: 50}));
+components.push(new Box({x:100, y:100, rot:Math.PI/4}, {width: 50}));
+
+
 setup();
+
