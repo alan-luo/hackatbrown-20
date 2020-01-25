@@ -15,16 +15,8 @@ function makeComponent(type, myProps) {
 	}
 }
 
-for(let i=0; i<10; i++) {
-	myComponent = makeComponent({
-		x:Math.random()*700,
-		y:Math.random()*500
-	});
-
-	components.push(myComponent);
-}
-
 function setup() {
+	ctx.translate(canvas.width/2, canvas.height/2);
 	loop();
 }
 function loop() {
@@ -39,5 +31,5 @@ function loop() {
 	window.requestAnimationFrame(loop);
 }
 
-// components.push(makeComponent());
+components.push(makeComponent("box", {x:0, y:0}));
 setup();
