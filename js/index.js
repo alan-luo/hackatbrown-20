@@ -5,7 +5,7 @@ console.log(canvas.width, canvas.height);
 
 let components = [];
 function makeComponent() {
-	return {
+	return ({
 		props: {
 			x: 100,
 			y: 100,
@@ -13,23 +13,25 @@ function makeComponent() {
 		draw: function() {
 
 		},
-	}
+	});
 }
 
-components.push(makeComponent());
 
 function setup() {
 	loop();
 }
 
 function loop() {
-	ctx.clearRect(canvas.width, canvas.height);
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	for(let component in components) {
+	for(let idx in components) {
+		let component = components[idx];
+
 		component.draw();
 	}
 
 	window.requestAnimationFrame(loop);
 }
 
+components.push(makeComponent());
 setup();
