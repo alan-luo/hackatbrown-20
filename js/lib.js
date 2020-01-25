@@ -5,11 +5,11 @@ let ctx = canvas.getContext("2d");
 let colors = (function() {
 	colorIndex = 0;
 	fillArr = [
-		"hsv(255,67%,100%)",
-		"hsv(251,67%,91%)",
-		"hsv(235,62%,100%)",
-		"hsv(219,67%,91%)",
-		"hsv(203,67%,100%)",
+		"hsl(255,67%,100%)",
+		"hsl(251,67%,91%)",
+		"hsl(235,62%,100%)",
+		"hsl(219,67%,91%)",
+		"hsl(203,67%,100%)",
 	];
 
 	return ({

@@ -20,6 +20,8 @@ class RandomShape extends Component {
 	update = function(){};
 	draw = function(){
 
+		colors.setIndex(0);
+
 		ctx.beginPath();
 		for (let j = 0; j < this.vertices; j++) {
 			ctx.lineTo(this.xVal[j], this.yVal[j]);
