@@ -1,41 +1,35 @@
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
+// generate colors
+let colors = (function() {
+	colorIndex = 0;
+	fillArr = [
+		"rgb(191,249,227)",
+		"rgb(8,79,81)",
+		"rgb(179,161,157)",
+		"rgb(213,178,115)",
+		"rgb(32,63,84)",
+		"rgb(144,131,76)",
+	];
+
+	return ({
+		background:"rgb(223,214,215)",
+		stroke:"rgb(93,70,43)",
+		fills:fillArr,
+		getFill: function() {
+			colorIndex = (colorIndex+1) % fillArr.length;
+			return fillArr[colorIndex];
+		},
+		setIndex: function(index) {
+			colorIndex = index % fillArr.length;
+		}
+	});
+})();
+
 
 let components = [];
-function makeComponent(type, args) {
-	if (type == "shape1"){
-		
-		let xVal = new Array(args.vertices);
-		let yVal = new Array(args.vertices);
 
-
-		for (let i = 0; i < args.vertices; i++) {
-			let radius = 50 + Math.random()*100;
-			xVal[i] = Math.cos((36*i)*Math.PI/180)*radius;
-			yVal[i] = Math.sin((36*i)*Math.PI/180)*radius;
-		}
-
-		return({
-			type: "shape1",
-			props: args,
-			update: function(){
-
-			},
-			draw: function(){
-
-				ctx.beginPath();
-				for (let j = 0; j < 10; j++) {
-					ctx.lineTo(xVal[j], yVal[j]);
-				}
-				ctx.closePath();
-				ctx.stroke();
-
-			}
-		})
-
-	}
-}
 class Component {
 	pos = {x:0, y:0};
 	// pos: {x:, y:}, args:{val1:, val2:, ...}
@@ -149,7 +143,7 @@ function setup() {
 
 function loop() {
 	// clear everything
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	ctx.clearRect(-canvas.width/2, -canvas.height/2, canvas.width, canvas.height);
 
 	// update all states
 	for(let idx in components) components[idx].update();
@@ -165,3 +159,4 @@ components.push(new PolyBlob({x:-100, y:-100}, {width: 50}));
 components.push(new RandomShape({x:0, y: 0}, {vertices: 10}));
 // components.push(new Box({x:0, y:0}, {width: 50}));
 setup();
+
