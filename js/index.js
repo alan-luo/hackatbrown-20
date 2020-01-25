@@ -1,56 +1,5 @@
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
-
-
 let components = [];
 
-class Component {
-	pos = {x:0, y:0};
-	// pos: {x:, y:}, args:{val1:, val2:, ...}
-	constructor(pos, args) { 
-		this.pos = pos;
-	}
-
-	update = function() {};
-	draw = function() {};
-}
-
-class Box extends Component {
-	width = 0;
-	constructor(pos, args) {
-		super(pos, {});
-		this.width=args.width;
-	}
-	draw = function() {
-		ctx.fillRect(this.pos.x, this.pos.y, this.width, this.width);
-	}
-}
-
-class SquareEarring extends Box {
-    angle = 0;
-    reps = 0;
-    constructor(pos, args) {
-		super(pos, args);
-		this.angle = args.angle;
-		this.reps = args.reps;
-	}
-	draw = function() {
-	    ctx.lineWidth = 4
-		ctx.strokeRect(this.pos.x, this.pos.y, this.width, this.width);
-		//inner lines
-		ctx.beginPath();
-		for (i = 0; i < reps, i++){
-		    ctx.moveTo(this.pos.x, this.pos.y);
-            ctx.lineTo(this.pos.x + this.width*.3, this.pos.y + this.width *.7);
-		}
-
-
-        ctx.moveTo(this.pos.x, this.pos.y + this.width *.6);
-        ctx.lineTo(this.pos.x + this.width, this.pos.y + this.width);
-        ctx.stroke();
-        
-	}
-}
 
 function setup() {
 	ctx.translate(canvas.width/2, canvas.height/2);
@@ -59,18 +8,39 @@ function setup() {
 
 function loop() {
 	// clear everything
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	ctx.clearRect(-canvas.width/2, -canvas.height/2, canvas.width, canvas.height);
 
 	// update all states
 	for(let idx in components) components[idx].update();
 
 	// draw everything
-	for(let idx in components) components[idx].draw();
+	for(let idx in components) components[idx].doDraw();
 
 	// do it again
 	window.requestAnimationFrame(loop);
 }
 
-components.push(new Box({x:0, y:0}, {width: 50}));
-components.push(new SquareEarring({x:100, y:100}, {width: 50}, {angle: Math.PI / 6}));
+//components.push(makeComponent("box", {x:0, y:0}));
+//components.push(new RandomShape({x:0, y: 0}, {vertices: 10}));
+components.push(new RandomShape({x:125, y: 125, rot: Math.PI/3}, {vertices: 8}));
+components.push(new RandomShape({x:10, y: -10, rot:Math.PI}, {vertices: 6}));
+
+components.push(new RandomShape({x:-200, y: 20, rot: Math.PI/6}, {vertices: 7}));
+components.push(new RandomShape({x:100, y: -200, rot: Math.PI/3}, {vertices: 5}));
+
+// components.push(new Box({x:100, y:100, rot:Math.PI/4}, {width: 50}));
+
+// for(let i=0; i<5; i++) {
+// 	for(let j=0; j<5; j++) {
+// 		components.push(new StackedQuads({
+// 			x:-canvas.width/2+(canvas.width/5)*i,
+// 			y:-canvas.height/2+(canvas.height/5)*j, 
+// 			rot:Math.random()*2*Math.PI
+// 		}, {numQuads: Math.round(4+Math.random()*3)}));		
+// 	}
+// }
+
+
+
 setup();
+
