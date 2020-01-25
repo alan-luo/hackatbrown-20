@@ -20,7 +20,7 @@ class RandomShape extends Component {
 	update = function(){};
 	draw = function(){
 
-		colors.setIndex(0);
+		this.resetFill();
 
 		ctx.beginPath();
 		for (let j = 0; j < this.vertices; j++) {
@@ -50,8 +50,7 @@ class RandomShape extends Component {
 		ctx.lineTo(this.xVal[2],this.yVal[2]);
 		ctx.lineTo(this.xVal[0], this.yVal[0]);
 		ctx.closePath();
-		ctx.fillStyle = colors.getFill();
-		ctx.fill();
+		this.fill();
 
 		ctx.beginPath();
 		ctx.lineTo(this.xVal[0], this.yVal[0]);
@@ -60,8 +59,7 @@ class RandomShape extends Component {
 		}
 		ctx.lineTo(this.xVal[0], this.yVal[0]);
 		ctx.closePath();
-		ctx.fillStyle = colors.getFill();
-		ctx.fill();
+		this.fill();
 
 		ctx.beginPath();
 		ctx.lineTo(this.xVal[2], this.yVal[2]);
