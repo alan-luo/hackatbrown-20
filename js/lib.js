@@ -3,18 +3,20 @@ let ctx = canvas.getContext("2d");
 
 // generate colors
 let colors = (function() {
+	centerHue = Math.random()*360;
+	console.log(centerHue);
 	colorIndex = 0;
 	fillArr = [
-		"hsl(255,67%,100%)",
-		"hsl(251,67%,91%)",
-		"hsl(235,62%,100%)",
-		"hsl(219,67%,91%)",
-		"hsl(203,67%,100%)",
+		"hsl(" + (centerHue+40)+ ",67%,75%)",
+		"hsl(" + (centerHue+20)+ ",67%,75%)",
+		"hsl(" + centerHue+ ",62%,75%)",
+		"hsl(" + (centerHue-20)+ ", 67%,75%)",
+		"hsl(" + (centerHue-40)+ "164, 67%,75%)",
 	];
 
 	return ({
 		background:"rgb(223,214,215)",
-		stroke:"rgb(93,70,43)",
+		stroke:"rgb(36,70,43)",
 		fills:fillArr,
 		getFill: function() {
 			colorIndex = (colorIndex+1) % fillArr.length;
@@ -31,6 +33,7 @@ let colors = (function() {
 		}
 	});
 })();
+
 
 /** usage: adds the list of vertices to the working path
   - vertices: [{x:, y:,}, {x:, y:,}, ...]
