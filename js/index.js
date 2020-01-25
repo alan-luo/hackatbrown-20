@@ -27,6 +27,7 @@ components.push(new RandomShape({x:10, y: -10, rot:Math.PI}, {vertices: 6}));
 
 components.push(new RandomShape({x:-200, y: 20, rot: Math.PI/6}, {vertices: 7}));
 components.push(new RandomShape({x:100, y: -200, rot: Math.PI/3}, {vertices: 5}));
+components.push(new SquareEarring({x:100, y:100, rot: Math.PI/3}, {width: 50, angle: Math.PI/9}));
 
 // components.push(new Box({x:100, y:100, rot:Math.PI/4}, {width: 50}));
 
