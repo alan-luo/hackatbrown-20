@@ -3,14 +3,16 @@ let ctx = canvas.getContext("2d");
 
 
 let components = [];
-function makeComponent(myProps) {
-	return ({
-		type: "box",
-		props: myProps,
-		draw: function() {
-			ctx.fillRect(this.props.x, this.props.y, 50, 50);
-		},
-	});
+function makeComponent(type, myProps) {
+	if(type == "box") { 
+		return ({
+			type: "box",
+			props: myProps,
+			draw: function() {
+				ctx.fillRect(this.props.x, this.props.y, 50, 50);
+			},
+		});
+	}
 }
 
 for(let i=0; i<10; i++) {
@@ -37,5 +39,5 @@ function loop() {
 	window.requestAnimationFrame(loop);
 }
 
-components.push(makeComponent());
+// components.push(makeComponent());
 setup();
