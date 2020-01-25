@@ -5,12 +5,11 @@ let ctx = canvas.getContext("2d");
 let colors = (function() {
 	colorIndex = 0;
 	fillArr = [
-		"rgb(191,249,227)",
-		"rgb(8,79,81)",
-		"rgb(179,161,157)",
-		"rgb(213,178,115)",
-		"rgb(32,63,84)",
-		"rgb(144,131,76)",
+		"hsl(268,67,100)",
+		"hsl(251,67,91)",
+		"hsl(235,62,100)",
+		"hsl(219,67,91)",
+		"hsl(203,67,100)",
 	];
 
 	return ({
@@ -172,7 +171,7 @@ class RandomShape extends Component {
 		ctx.lineTo(this.xVal[2],this.yVal[2]);
 		ctx.lineTo(this.xVal[0], this.yVal[0]);
 		ctx.closePath();
-		ctx.fillStyle = 'green';
+		ctx.fillStyle = colors.getFill();
 		ctx.fill();
 
 		ctx.beginPath();
@@ -182,7 +181,7 @@ class RandomShape extends Component {
 		}
 		ctx.lineTo(this.xVal[0], this.yVal[0]);
 		ctx.closePath();
-		ctx.fillStyle = 'steelblue';
+		ctx.fillStyle = colors.getFill();
 		ctx.fill();
 
 		ctx.beginPath();
@@ -192,7 +191,7 @@ class RandomShape extends Component {
 		}
 		ctx.lineTo(this.xVal[2], this.yVal[2]);
 		ctx.closePath();
-		ctx.fillStyle = 'skyblue';
+		ctx.fillStyle = colors.getFill();
 		ctx.fill();
 
 	}
@@ -237,8 +236,6 @@ for(let i=0; i<5; i++) {
 	}
 }
 
-
-// components.push(new StackedQuads({x:0, y:0, rot:0}, {numQuads: 4}));
 
 
 setup();
