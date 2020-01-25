@@ -23,6 +23,9 @@ let colors = (function() {
 		},
 		setIndex: function(index) {
 			colorIndex = index % fillArr.length;
+		},
+		setRandomIndex: function() {
+			colorIndex = parseInt(Math.round(Math.random()*fillArr.length));
 		}
 	});
 })();
@@ -92,21 +95,30 @@ class StackedQuads extends Component {
 		this.numQuads = args.numQuads;
 
 		for(let i=0; i<this.numQuads; i++) {
-			quads.push({
+			let qWidth = 25;
+			let qHeight = 35;
+			this.quads.push({
 				angle:(2*Math.PI/this.numQuads)*i,
-				width:25,
-				height:50,
+				vertices: [
+				 {x:0, y: 0},
+				 {x:0+Math.random()*8-4, y: qHeight+Math.random()*8-4},
+				 {x:qWidth+Math.random()*8-4, y: qHeight+Math.random()*8-4},
+				 {x:qWidth+Math.random()*8-4, y: 0+Math.random()*8-4}
+				],
 			});
 		}
 	}
 	draw = function() {
-		for(let i=0; i<quads.length; i++) {
+		colors.setIndex(0);
+		for(let i=0; i<this.quads.length; i++) {
+			let quad = this.quads[i];
 			ctx.save();
-			ctx.rotate()
-			quads[i]
+			ctx.rotate(quad.angle);
+			makePath(quad.vertices, true);
+			ctx.fillStyle = colors.getFill();
+			ctx.fill();
+			ctx.restore();
 		}
-		makePath(this.outerVerts, this.pos, true);
-		ctx.fill();
 	}
 }
 
@@ -183,20 +195,8 @@ class RandomShape extends Component {
 		ctx.fillStyle = 'skyblue';
 		ctx.fill();
 
-
 	}
-
 }
-
-function isPrime(value) {
-    for(var i = 2; i < value; i++) {
-        if(value % i === 0) {
-            return false;
-        }
-    }
-    return value > 1;
-}
-
 
 function setup() {
 	ctx.translate(canvas.width/2, canvas.height/2);
@@ -219,13 +219,26 @@ function loop() {
 
 //components.push(makeComponent("box", {x:0, y:0}));
 //components.push(new RandomShape({x:0, y: 0}, {vertices: 10}));
-components.push(new RandomShape({x:125, y: 125, rot: Math.PI/3}, {vertices: 8}));
-components.push(new RandomShape({x:10, y: -10, rot:Math.PI}, {vertices: 6}));
+// components.push(new RandomShape({x:125, y: 125, rot: Math.PI/3}, {vertices: 8}));
+// components.push(new RandomShape({x:10, y: -10, rot:Math.PI}, {vertices: 6}));
 
-components.push(new RandomShape({x:-200, y: 20, rot: Math.PI/6}, {vertices: 7}));
-components.push(new RandomShape({x:100, y: -200, rot: Math.PI/3}, {vertices: 5}));
+// components.push(new RandomShape({x:-200, y: 20, rot: Math.PI/6}, {vertices: 7}));
+// components.push(new RandomShape({x:100, y: -200, rot: Math.PI/3}, {vertices: 5}));
 
-components.push(new Box({x:100, y:100, rot:Math.PI/4}, {width: 50}));
+// components.push(new Box({x:100, y:100, rot:Math.PI/4}, {width: 50}));
+
+for(let i=0; i<5; i++) {
+	for(let j=0; j<5; j++) {
+		components.push(new StackedQuads({
+			x:-canvas.width/2+(canvas.width/5)*i,
+			y:-canvas.height/2+(canvas.height/5)*j, 
+			rot:Math.random()*2*Math.PI
+		}, {numQuads: Math.round(4+Math.random()*3)}));		
+	}
+}
+
+
+// components.push(new StackedQuads({x:0, y:0, rot:0}, {numQuads: 4}));
 
 
 setup();
