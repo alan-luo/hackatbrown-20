@@ -1,11 +1,17 @@
 let components = [];
 
 
+function resize() {
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+}
 function setup() {
+	resize();
+	console.log(canvas.width, canvas.height);;
 	ctx.translate(canvas.width/2, canvas.height/2);
+
 	loop();
 }
-
 function loop() {
 	// clear everything
 	ctx.clearRect(-canvas.width/2, -canvas.height/2, canvas.width, canvas.height);
@@ -15,6 +21,7 @@ function loop() {
 
 	// draw everything
 	for(let idx in components) components[idx].doDraw();
+
 
 	// do it again
 	window.requestAnimationFrame(loop);

@@ -21,14 +21,14 @@ class StackedQuads extends Component {
 		}
 	}
 	draw = function() {
-		colors.setIndex(0);
+		this.resetFill();
 		for(let i=0; i<this.quads.length; i++) {
 			let quad = this.quads[i];
 			ctx.save();
 			ctx.rotate(quad.angle);
 			makePath(quad.vertices, true);
 			ctx.fillStyle = colors.getFill();
-			ctx.fill();
+			this.fill();
 			ctx.restore();
 		}
 	}
