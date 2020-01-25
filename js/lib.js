@@ -23,6 +23,9 @@ let colors = (function() {
 		setIndex: function(index) {
 			colorIndex = index % fillArr.length;
 		},
+		getRandomIndex: function() {
+			return parseInt(Math.round(Math.random()*fillArr.length));
+		},
 		setRandomIndex: function() {
 			colorIndex = parseInt(Math.round(Math.random()*fillArr.length));
 		}
