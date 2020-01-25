@@ -14,7 +14,7 @@ class SquareEarring extends Component {
 		//inner lines
 		ctx.beginPath();
 		ctx.moveTo(this.pos.x, this.pos.y);
-        ctx.lineTo(this.pos.x + sin, this.pos.y + cos);
+        ctx.lineTo(this.pos.x + sin, this.pos.y + this.width);
         ctx.lineTo(this.pos.x + this.width, this.pos.y + sin);
         ctx.lineTo(this.pos.x + this.width - sin, this.pos.y)
         ctx.stroke();
