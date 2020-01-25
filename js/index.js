@@ -61,11 +61,15 @@ class Box extends Component {
 }
 /** usage: adds the list of vertices to the working path
   - vertices: [{x:, y:,}, {x:, y:,}, ...]
+  - disp: {x:, y:,} displacement from origin
   - closed: bool (when true, adds first vertex to end of path)
 
   - note: doesn't fill or draw anything (do this yourself) 
 **/
-function makePath(vertices, closed) {
+function makePath(vertices, disp, closed) {
+	ctx.save();
+	ctx.translate(disp.x, disp.y);
+
 	ctx.beginPath();
 	ctx.moveTo(vertices[0].x, vertices[0].y);
 
@@ -76,6 +80,7 @@ function makePath(vertices, closed) {
 		let myV = vertices[vertices.length-1];
 		ctx.lineTo(myV.x, myV.y);
 	}
+	ctx.restore();
 }
 class PolyBlob extends Component {
 	// outerVerts = [];
@@ -99,7 +104,7 @@ class PolyBlob extends Component {
 		}
 	}
 	draw = function() {
-		makePath(this.outerVerts, true);
+		makePath(this.outerVerts, this.pos, true);
 		ctx.fill();
 	}
 }
