@@ -18,7 +18,7 @@ function makeRandom(pos) {
 	} else if (whichThing == 1) {
 		return new SquareEarring(pos, {angle:Math.PI*2*((0.5+Math.random())/12), width:50+Math.random()*20});
 	} else if (whichThing == 2) {
-		return new StackedQuads(pos, {numQuads:5+Math.floor(Math.random(3))});
+		return new StackedQuads(pos, {numQuads:5+Math.floor(Math.random()*2)});
 	}
 }
 
@@ -45,9 +45,17 @@ function setup() {
 	
 	for (i = -canvas.width; i < canvas.width; i += 60){
 		for (j = -canvas.height; j < canvas.height; j+=60){
-			bg_components.push(new BackgroundShape({x: i, y: j, rot: Math.random()*2*Math.PI}, {sides: 3+ Math.trunc(Math.random()*7)}));
+			if(Math.random()>0.9) {
+				bg_components.push(new BackgroundShape({x: i, y: j, rot: Math.random()*2*Math.PI}, {sides: 3+ Math.trunc(Math.random()*7)}));
+			}
 		}
 	}
+
+	// for(x=-200; x<200; x+=40) {
+	// 	for(y=-200; y<200; y+=40) {
+	// 		components.push(new SquareEarring({x:x, y:y, rot:0}, {width:30, angle:(1/12)*2*Math.PI}));
+	// 	}
+	// }
 
 	loop();
 }
@@ -106,9 +114,10 @@ $("#canvas").mousemove(function(e) {
 // components.push(new RandomShape({x:10, y: -10, rot:Math.PI}, {vertices: 6}));
 
 // components.push(new StackedQuads({x:0, y:0, rot:0}, {numQuads: 5}));
-components.push(makeRandom({x: 0, y: 0, rot: 0}));
-components.push(makeRandom({x: 0, y: 100, rot: 0}));
-components.push(makeRandom({x: 0, y: -100, rot: 0}));
+// components.push(makeRandom({x: 0, y: 0, rot: 0}));
+// components.push(makeRandom({x: 0, y: 100, rot: 0}));
+// components.push(makeRandom({x: 0, y: -100, rot: 0}));
+
 setup();
 
 // --- leap motion --------------
