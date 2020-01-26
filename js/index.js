@@ -9,6 +9,12 @@ function setup() {
 	resize();
 	console.log(canvas.width, canvas.height);;
 	ctx.translate(canvas.width/2, canvas.height/2);
+	
+	for (i = -canvas.width; i < canvas.width; i += 40){
+		for (j = -canvas.height; j < canvas.height; j+=40){
+			components.push(new BackgroundShape({x: i, y: j, rot: Math.random()*2*Math.PI}, {sides: 3+ Math.trunc(Math.random()*7)}));
+		}
+	}
 
 	loop();
 }
@@ -35,18 +41,6 @@ $("#canvas").mousemove(function(e) {
 });
 
 
-
-for (i = 10; i < canvas.width; i += 20){
-	for (j = 10; j < canvas.height; j+=20){
-		components.push(new BackgroundShape({x: i, y: j, rot: Math.random()*2*Math.PI}, {sides: 3+ Math.trunc(Math.random()*7)}));
-	}
-}
-
-
-
-components.push(new BackgroundShape({x:0, y: 0}, {sides: 4}));
-components.push(new BackgroundShape({x:100, y: 100}, {sides: 5}));
-components.push(new BackgroundShape({x:-100, y: -100}, {sides: 6}));
 
 
 // components.push(new RandomShape({x:125, y: 125, rot: Math.PI/3}, {vertices: 8}));

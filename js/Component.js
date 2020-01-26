@@ -40,13 +40,15 @@ class Box extends Component {
 }
 
 class BackgroundShape extends Component {
-	size = 10;
+	size = 4;
 	sides = 0;
 	inAngle = 0;
 	xVert = null;
 	yVert = null;
-	angularVel = 0.7;
-	angularAccel = +0.2;
+	// angularVel = 0.7;
+	// angularAccel = +0.2;
+	angularVel = 0;
+	angularAccel = 0;
 	constructor(pos, args){
 		super(pos, {});
 		this.sides = args.sides;
@@ -91,6 +93,7 @@ class BackgroundShape extends Component {
 			ctx.lineTo(this.xVert[i], this.yVert[i]);
 		}
 		ctx.closePath();
+		ctx.strokeStyle = '#C0C0C0';	
 		ctx.stroke();
 	}
 
