@@ -8,6 +8,7 @@ class Component {
 	colorIndex = 0;
 	frozen = false;
 	autonomous = false;
+	ignorePointer = false;
 	// pos: {x:, y:}, args:{val1:, val2:, ...}
 	constructor(pos, args) { 
 		this.pos = pos;
@@ -31,12 +32,34 @@ class Component {
 			
 			let len = dist({x:0, y:0}, vec);
 			let normVec = {x: vec.x/len, y:vec.y/len};
-			if(len > 150) {
+			if(len > 250) {
 				this.acc.x += normVec.x*0.015;
 				this.acc.y += normVec.y*0.015;
 			}
 
 		}
+
+		if(!this.ignorePointer) {
+			let vec = {
+				x:mouse.pos.x-this.pos.x,
+				y:mouse.pos.y-this.pos.y,
+			};
+			if(hand.obj != null) {
+				vec = {
+					x:hand.pos.x-this.pos.x,
+					y:hand.pos.y-this.pos.y,	
+				}
+			}
+			let len = dist({x:0, y:0}, vec);
+			let normVec = {x: vec.x/len, y:vec.y/len};
+			if(len < 250) {
+				this.acc.x -= normVec.x*0.015;
+				this.acc.y -= normVec.y*0.015;
+			}
+		}
+		// this.acc.x = 0; this.acc.y = 0;
+		
+
 
 		let goalAngle = Math.atan2(this.vel.y, this.vel.x);
 		this.acc.rot+=(goalAngle-this.pos.rot)*0.00001;
@@ -106,6 +129,8 @@ class BackgroundShape extends Component {
 	// angularAccel = +0.2;
 	angularVel = 0;
 	angularAccel = 0;
+
+	ignorePointer = true;
 	constructor(pos, args){
 		super(pos, {});
 		this.sides = args.sides;

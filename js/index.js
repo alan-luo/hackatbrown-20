@@ -291,8 +291,8 @@ function explodeFrom(center) {
 				let normVec = {x: vec.x/len, y: vec.y/len};
 				//console.log(normVec);
 
-				mySpawn.vel.x = normVec.x*50;
-				mySpawn.vel.y = normVec.y*50;
+				mySpawn.vel.x = -normVec.x*50;
+				mySpawn.vel.y = -normVec.y*50;
 			}
 		}
 	}
@@ -307,7 +307,6 @@ function backgroundAnimate(center) {
 				let vec = {x: myPos.x - center.x, y: myPos.y - center.y};
 				let len = dist({x:0, y:0}, vec);
 				let normVec = {x: vec.x/len, y: vec.y/len};
-				console.log(normVec);
 
 				bg_Shape.vel.x = normVec.x*10;
 				bg_Shape.vel.y = normVec.y*10;
@@ -377,7 +376,7 @@ Leap.loop(controllerOptions, function(frame) {
 	if(frame.gestures.length>0) {
 		frame.gestures.forEach(function(gesture){
 			if(gesture.type == "circle") {
-				
+			  backgroundAnimate(hand.pos);
 			} else if(gesture.type=="keyTap") {
               console.log("Key Tap Gesture");
               explodeFrom(hand.pos);
