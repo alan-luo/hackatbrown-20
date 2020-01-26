@@ -2,19 +2,25 @@ let components = [];
 let bg_components = [];
 
 
-handState = "nothing";
-hand = {
+let handState = "nothing";
+let hand = {
 	pos: {x:0, y:0, z:0},
 	vel: {x:0, y:0, z:0},
 	pinch: -1,
 }
 
-mouseState = "nothing";
-mouse = { x: 0, y: 0, down:true};
+let mouseState = "nothing";
+let mouse = { 
+	pos: {x: 0, y: 0}, 
+	down:false 
+};
+
 $("#canvas").mousemove(function(e) {
-	mouse.x = e.pageX;
-	mouse.y = e.pageY;
+	mouse.pos.x = e.pageX;
+	mouse.pos.y = e.pageY;
 });
+
+spawnState = "default";
 
 function makeRandom(pos) {
 	var whichThing = Math.floor(Math.random()*3);
@@ -46,12 +52,11 @@ function debug() {
 function setup() {
 	resize();
 	console.log(canvas.width, canvas.height);;
-	ctx.translate(canvas.width/2, canvas.height/2);
 
 	ctx.save();
 	
-	for (i = -canvas.width; i < canvas.width; i += 60){
-		for (j = -canvas.height; j < canvas.height; j+=60){
+	for (i = 0; i < canvas.width; i += 60){
+		for (j = 0; j < canvas.height; j+=60){
 			if(Math.random()>0.3) {
 				bg_components.push(new BackgroundShape({x: i, y: j, rot: Math.random()*2*Math.PI}, {sides: 3+ Math.trunc(Math.random()*7)}));
 			}
@@ -74,11 +79,16 @@ $("#canvas").mouseup(function() {
 	mouse.down = false;
 });
 
+
+
+mySpawn = [];
+lastSpawn = {x:-1000, y:-1000};
+
 function loop() {
 
 	// clear everything
 	ctx.fillStyle=colors.background;
-	ctx.fillRect(-canvas.width/2, -canvas.height/2, canvas.width, canvas.height);
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 	// update all states
 	for(let idx in bg_components) bg_components[idx].update();
@@ -86,8 +96,23 @@ function loop() {
 
 
 	// resolve click actions
-	if(mouseState == "clicking") {
-	
+	if(spawnState == "default") {
+		if(mouse.down) {
+			spawnState = "spawning"
+		}
+	} else if(spawnState == "spawning") {
+		if(!mouse.down) { //create the thing
+
+		} else { // keep spawning
+			if(distSq(lastSpawn, mouse.pos) > 900) {
+				mySpawn.push(new SquareEarring({
+					x:mouse.pos.x,
+					y:mouse.pos.y,
+					rot:0,
+				}, {width:20, angle:(1/6)*Math.PI} ));
+				lastSpawn = {x:mouse.pos.x, y:mouse.pos.y};
+			}
+		}
 	}
 
 
@@ -108,24 +133,20 @@ function loop() {
 	// draw everything
 	for(let idx in bg_components) bg_components[idx].doDraw();
 	for(let idx in components) components[idx].doDraw();
+
+	for(let idx in mySpawn) mySpawn[idx].doDraw();
 		
-	ctx.fillStyle = "red";
-	ctx.beginPath();
-	ctx.arc(hand.pos.x, hand.pos.y, 5, 0, 2*Math.PI);
-	ctx.fill();
+	// ctx.fillStyle = "red";
+	// ctx.beginPath();
+	// ctx.arc(hand.pos.x, hand.pos.y, 5, 0, 2*Math.PI);
+	// ctx.fill();
 
 	// leap motion debug
 	debug();
 
 	// do it again
 	window.requestAnimationFrame(loop);
-
 }
-mouse = { x: 0, y: 0};
-$("#canvas").mousemove(function(e) {
-	mouse.x = e.pageX;
-	mouse.y = e.pageY;
-});
 
 
 

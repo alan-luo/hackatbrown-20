@@ -1,14 +1,12 @@
 class SquareEarring extends Component {
     width = 0;
     angle = 0;
-    frames = 0;
     constructor(pos, args) {
 		super(pos, {});
 		this.width = args.width;
 		this.angle = args.angle;
 	}
 	update = function() {
-		this.frames++;
 		// this.angle=Math.PI*0.5*Math.sin(this.frames*0.005);
 	};
 	draw = function() {

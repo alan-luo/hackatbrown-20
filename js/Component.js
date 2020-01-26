@@ -1,5 +1,8 @@
 class Component {
 	pos = {x:0, y:0, rot:0};
+	vel = {x:0, y:0};
+	acc = {x:0, y:0};
+
 	startIndex = 0;
 	colorIndex = 0;
 	// pos: {x:, y:}, args:{val1:, val2:, ...}
@@ -8,7 +11,12 @@ class Component {
 		this.startIndex = colors.getRandomIndex();
 	}
 
-	update = function() {};
+	update = function() {
+		this.pos.x+=this.vel.x; this.pos.y+=this.vel.y;
+		this.vel.x+=this.acc.x; this.vel.y+=this.acc.y;
+
+		
+	};
 	draw = function() {};
 	doDraw = function() {
 		ctx.save();

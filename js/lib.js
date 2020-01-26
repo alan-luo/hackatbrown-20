@@ -60,3 +60,10 @@ function makePath(vertices, disp, closed) {
 	}
 	ctx.restore();
 }
+
+function distSq(pt1, pt2) {
+	return Math.pow(pt1.x-pt2.x, 2)+Math.pow(pt1.y-pt2.y, 2);
+}
+function dist(pt1, pt2) {
+	return Math.sqrt(dist(pt1, pt2));
+}
