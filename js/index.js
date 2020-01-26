@@ -130,7 +130,17 @@ function loop() {
 	for(let i in bg_components) bg_components[i].doDraw();
 	for(let i in components) components[i].doDraw();
 
-	for(let i in spawns) for(let j in spawns[i]) spawns[i][j].doDraw();
+	for(let i in spawns) {
+		for(let j=0; j<spawns[i].length-1; j++) {
+			ctx.beginPath();
+			ctx.moveTo(spawns[i][j].pos.x, spawns[i][j].pos.y);
+			ctx.lineTo(spawns[i][j+1].pos.x, spawns[i][j+1].pos.y);
+			ctx.stroke();
+		}
+		for(let j in spawns[i]) {
+			spawns[i][j].doDraw()
+		}
+	}
 		
 	// ctx.fillStyle = "red";
 	// ctx.beginPath();
