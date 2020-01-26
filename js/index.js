@@ -87,7 +87,6 @@ function loop() {
 	for(let idx in bg_components) bg_components[idx].update();
 	for(let idx in components) components[idx].update();
 
-
 	// resolve click actions
 	if(spawnState == "default") {
 		if(mouse.down) {
@@ -95,7 +94,6 @@ function loop() {
 		}
 	} else if(spawnState == "spawning") {
 		if(!mouse.down) { //create the thing
-
 		} else { // keep spawning
 			if(distSq(lastSpawn, mouse.pos) > 900) {
 				mySpawn.push(makeRandom({
@@ -139,7 +137,7 @@ function loop() {
 
 	// do it again
 	window.requestAnimationFrame(loop);
-	
+
 }
 
 

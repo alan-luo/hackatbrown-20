@@ -32,7 +32,18 @@ let colors = (function() {
 		},
 		setRandomIndex: function() {
 			colorIndex = parseInt(Math.floor(Math.random()*fillArr.length));
-		}
+		},
+		regenerateColors: function(){
+			centerHue = Math.random()*360;
+			console.log(centerHue);
+			fillArr = [
+				`hsl(${centerHue+50},40%,75%)`,
+				`hsl(${centerHue+25},50%,50%)`,
+				`hsl(${centerHue   },67%,75%)`,
+				`hsl(${centerHue-25},67%,65%)`,
+				`hsl(${centerHue-50},70%,50%)`,
+			];
+		},
 	});
 })();
 
