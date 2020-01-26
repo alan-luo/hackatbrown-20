@@ -78,17 +78,13 @@ $("#canvas").mouseup(function() {
 lastSpawn = {x:-1000, y:-1000};
 
 spawns=[];
-
+globalFrames = 0;
 function loop() {
+	globalFrames++;
 
 	// clear everything
 	ctx.fillStyle=colors.background;
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-	// update all states
-	for(let idx in bg_components) bg_components[idx].update();
-	for(let idx in components) components[idx].update();
-
 
 	// resolve click actions
 	if(spawnState == "default") {
@@ -98,14 +94,21 @@ function loop() {
 		}
 	} else if(spawnState == "spawning") {
 		if(!mouse.down) { //create the thing
+			let mySpawn = spawns[spawns.length-1];
+
+			for(let i=0; i<mySpawn.length; i++) {
+				mySpawn[i].frozen = false;
+			}
 			spawnState = "default";
 		} else { // keep spawning
-			if(distSq(lastSpawn, mouse.pos) > 900) {
-				spawns[spawns.length-1].push(makeRandom({
+			if(distSq(lastSpawn, mouse.pos) > 80*80) {
+				let mySpawn = spawns[spawns.length-1];
+				mySpawn.push(makeRandom({
 					x:mouse.pos.x,
 					y:mouse.pos.y,
 					rot:Math.atan2(mouse.pos.y-lastSpawn.y, mouse.pos.x-lastSpawn.x),
 				}));
+				mySpawn[mySpawn.length-1].frozen = true;
 				lastSpawn = {x:mouse.pos.x, y:mouse.pos.y};
 				
 			}
@@ -125,6 +128,42 @@ function loop() {
 	// 		handState = "nothing";
 	// 	}
 	// }
+
+	// update all states
+	for(let idx in bg_components) bg_components[idx].update();
+	for(let idx in components) components[idx].update();
+
+
+	for(let i in spawns) {
+		for(let j=0; j<spawns[i].length-1; j++) {
+			let s1 = spawns[i][j];  
+			let s2 = spawns[i][j+1];
+
+			if(s1.frozen) break;
+
+			let s1p = spawns[i][j].pos;
+			let s2p = spawns[i][j+1].pos;
+
+			// calculate distance between s1 and s2
+			let d = dist({x:s1p.x, y:s1p.y}, {x:s2p.x, y:s2p.y});
+			// console.log(d);
+			// calculate displacement (positive or negative)
+			let displc = 30-d;
+			// calculate magnitude of force based on displacement
+			let vec = { x:s2p.x-s1p.x, y:s2p.y-s1p.y};
+			let len = dist({x:0, y:0}, vec);
+			let vecNorm = {x: vec.x/len, y:vec.y/len};
+
+			// force from s1 to s2
+			let force = {x:vecNorm.x*displc*0.0001, y:vecNorm.y*displc*0.0001};
+
+			// add force to acceleration
+			// s2.acc.x+=force.x; s2.acc.y+=force.y;
+			s1.acc.x-=force.x; s1.acc.y-=force.y;
+
+			s1.update(); s2.update();
+		}
+	}
 
 	// draw everything
 	for(let i in bg_components) bg_components[i].doDraw();

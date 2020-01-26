@@ -17,7 +17,6 @@ class RandomShape extends Component {
 		}
 		
 	}
-	update = function(){};
 	draw = function(){
 		this.resetFill();
 

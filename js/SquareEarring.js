@@ -10,9 +10,6 @@ class SquareEarring extends Component {
 
 		this.orientation = Math.floor(Math.random()*4);
 	}
-	update = function() {
-		// this.angle=Math.PI*0.5*Math.sin(this.frames*0.005);
-	};
 	draw = function() {
 		ctx.save();
 		// ctx.translate(-this.width/2, -this.width/2);

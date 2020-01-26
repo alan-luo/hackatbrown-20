@@ -5,6 +5,7 @@ class Component {
 
 	startIndex = 0;
 	colorIndex = 0;
+	frozen = false;
 	// pos: {x:, y:}, args:{val1:, val2:, ...}
 	constructor(pos, args) { 
 		this.pos = pos;
@@ -12,6 +13,7 @@ class Component {
 	}
 
 	update = function() {
+		if(this.frozen) return;
 		this.pos.x+=this.vel.x; 
 		this.pos.y+=this.vel.y;
 		this.pos.rot+=this.vel.rot;
@@ -19,6 +21,11 @@ class Component {
 		this.vel.x+=this.acc.x; 
 		this.vel.y+=this.acc.y;
 		this.vel.rot+=this.acc.rot;
+
+		this.vel.x*=0.8; this.vel.y*=0.8;
+		this.acc.x*=0.95; this.acc.y*=0.95;
+
+
 	};
 	draw = function() {};
 	doDraw = function() {
