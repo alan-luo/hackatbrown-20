@@ -86,6 +86,11 @@ function loop() {
 	ctx.fillStyle=colors.background;
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+
+	// update all states
+	for(let idx in bg_components) bg_components[idx].update();
+	for(let idx in components) components[idx].update();
+
 	// resolve click actions
 	if(spawnState == "default") {
 		if(mouse.down) {
@@ -191,7 +196,7 @@ function loop() {
 
 	// do it again
 	window.requestAnimationFrame(loop);
-	
+
 }
 
 
