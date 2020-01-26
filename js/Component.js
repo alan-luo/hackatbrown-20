@@ -37,18 +37,10 @@ class Component {
 		this.acc.rot*=0.9;
 
 
-		if(this.pos.x < -15) {
-			this.vel.x*=-1;
-		} else if(this.pos.x < -30) this.pos.x = -10;
-		if(this.pos.x > canvas.width+15) {
-			this.vel.x*=-1;
-		} else if(this.pos.x > canvas.width+30) this.pos.x = canvas.width+10;
-		if(this.pos.y < -15) {
-			this.vel.y*=-1;
-		} else if(this.pos.y < -30) this.pos.y = -10;
-		if(this.pos.y > canvas.height+15) {
-			this.vel.y*=-1;	
-		} else if(this.pos.y > canvas.height+30) this.pos.y = canvas.height+10;
+		if(this.pos.x < -15) if(this.vel.x < 0) this.vel.x*=-1;
+		if(this.pos.x > canvas.width+15) if(this.vel.x>0) this.vel.x*=-1;
+		if(this.pos.y < -15) if(this.vel.y < 0) this.vel.y*=-1;
+		if(this.pos.y > canvas.height+15) if(this.vel.y>0) this.vel.y*=-1;
 
 		this.pos.x+=this.vel.x; 
 		this.pos.y+=this.vel.y;
