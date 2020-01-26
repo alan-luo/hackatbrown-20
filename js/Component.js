@@ -1,7 +1,7 @@
 class Component {
 	pos = {x:0, y:0, rot:0};
-	vel = {x:0, y:0};
-	acc = {x:0, y:0};
+	vel = {x:0, y:0, rot:0};
+	acc = {x:0, y:0, rot:0};
 
 	startIndex = 0;
 	colorIndex = 0;
@@ -12,10 +12,13 @@ class Component {
 	}
 
 	update = function() {
-		this.pos.x+=this.vel.x; this.pos.y+=this.vel.y;
-		this.vel.x+=this.acc.x; this.vel.y+=this.acc.y;
+		this.pos.x+=this.vel.x; 
+		this.pos.y+=this.vel.y;
+		this.pos.rot+=this.vel.rot;
 
-		
+		this.vel.x+=this.acc.x; 
+		this.vel.y+=this.acc.y;
+		this.vel.rot+=this.acc.rot;
 	};
 	draw = function() {};
 	doDraw = function() {
