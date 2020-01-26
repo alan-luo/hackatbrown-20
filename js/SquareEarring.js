@@ -12,26 +12,30 @@ class SquareEarring extends Component {
 		// this.angle=Math.PI*0.5*Math.sin(this.frames*0.005);
 	};
 	draw = function() {
+		ctx.save();
+		ctx.translate(-this.width/2, -this.width/2);
 
 	    this.resetFill();
+
 	    ctx.beginPath();
-		ctx.strokeRect(this.pos.x, this.pos.y, this.width, this.width);
-		ctx.fill();
+		ctx.rect(0, 0, this.width, this.width);
+		this.fill();
 
 		let sin = Math.sin(this.angle)*this.width;
 		let cos = Math.cos(this.angle)*this.width;
 
 		//inner lines
-		ctx.moveTo(this.pos.x, this.pos.y);
-        ctx.lineTo(this.pos.x + sin, this.pos.y + this.width);
-        ctx.fill();
+		ctx.moveTo(0, 0);
+        ctx.lineTo(sin, this.width);
+        this.fill();
 
-        ctx.lineTo(this.pos.x + this.width, this.pos.y + sin);
-        ctx.fill();
+        ctx.lineTo(this.width, sin);
+        this.fill();
 
-        ctx.lineTo(this.pos.x + this.width - sin, this.pos.y);
+        ctx.lineTo(this.width - sin, 0);
 
-        ctx.fillStyle = colors.getFill();
-        ctx.fill();
+        // ctx.fillStyle = colors.getFill();
+        this.fill();
+        ctx.restore();
 	}
 }

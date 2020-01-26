@@ -19,7 +19,6 @@ class RandomShape extends Component {
 	}
 	update = function(){};
 	draw = function(){
-
 		this.resetFill();
 
 		ctx.beginPath();
@@ -27,7 +26,7 @@ class RandomShape extends Component {
 			ctx.lineTo(this.xVal[j], this.yVal[j]);
 		}
 		ctx.closePath();
-		ctx.stroke();
+		// ctx.stroke();
 
 		// ctx.lineTo(this.xVal[Math.trunc(this.vertices/4)],this.yVal[Math.trunc(this.vertices/4)])
 		// ctx.lineTo(this.xVal[Math.trunc(3*this.vertices/4)],this.yVal[Math.trunc(3*this.vertices/4)])
@@ -37,7 +36,7 @@ class RandomShape extends Component {
 		ctx.lineTo(this.xVal[0], this.yVal[0]);
 		ctx.lineTo(this.xVal[2],this.yVal[2]);
 		ctx.lineTo(this.xVal[this.endVert],this.yVal[this.endVert]);
-		ctx.stroke();
+		// ctx.stroke();
 		ctx.closePath();
 
 

@@ -12,9 +12,11 @@ class Component {
 	draw = function() {};
 	doDraw = function() {
 		ctx.save();
+
 		ctx.translate(this.pos.x, this.pos.y);
 		ctx.rotate(this.pos.rot);
 		this.draw();
+		
 		ctx.restore();
 	};
 
@@ -29,12 +31,14 @@ class Component {
 }
 
 class Box extends Component {
-	width = 0;
+	width = 50;
 	constructor(pos, args) {
 		super(pos, {});
 		this.width=args.width;
 	}
 	draw = function() {
-		ctx.fillRect(0, 0, this.width, this.width);
+		this.resetFill();
+		ctx.rect(0, 0, this.width, this.width);
+		this.fill();
 	}
 }

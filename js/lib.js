@@ -7,11 +7,11 @@ let colors = (function() {
 	console.log(centerHue);
 	colorIndex = 0;
 	fillArr = [
-		"hsl(" + (centerHue+40)+ ",67%,75%)",
-		"hsl(" + (centerHue+20)+ ",67%,75%)",
-		"hsl(" + centerHue+ ",62%,75%)",
-		"hsl(" + (centerHue-20)+ ", 67%,75%)",
-		"hsl(" + (centerHue-40)+ "164, 67%,75%)",
+		`hsl(${centerHue+50},40%,75%)`,
+		`hsl(${centerHue+25},50%,50%)`,
+		`hsl(${centerHue   },67%,75%)`,
+		`hsl(${centerHue-25},67%,65%)`,
+		`hsl(${centerHue-50},70%,50%)`,
 	];
 
 	return ({
@@ -27,10 +27,10 @@ let colors = (function() {
 			colorIndex = index % fillArr.length;
 		},
 		getRandomIndex: function() {
-			return parseInt(Math.round(Math.random()*fillArr.length));
+			return parseInt(Math.floor(Math.random()*fillArr.length));
 		},
 		setRandomIndex: function() {
-			colorIndex = parseInt(Math.round(Math.random()*fillArr.length));
+			colorIndex = parseInt(Math.floor(Math.random()*fillArr.length));
 		}
 	});
 })();
