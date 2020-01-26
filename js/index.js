@@ -224,8 +224,8 @@ function explodeFrom(center) {
 				let normVec = {x: vec.x/len, y: vec.y/len};
 				console.log(normVec);
 
-				mySpawn.vel.x = normVec.x*100;
-				mySpawn.vel.y = normVec.y*100;
+				mySpawn.vel.x = normVec.x*50;
+				mySpawn.vel.y = normVec.y*50;
 			}
 		}
 	}

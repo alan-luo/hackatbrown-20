@@ -36,6 +36,20 @@ class Component {
 		this.vel.rot*=0.99;
 		this.acc.rot*=0.9;
 
+
+		if(this.pos.x < -15) {
+			this.vel.x*=-1;
+		} else if(this.pos.x < -30) this.pos.x = -10;
+		if(this.pos.x > canvas.width+15) {
+			this.vel.x*=-1;
+		} else if(this.pos.x > canvas.width+30) this.pos.x = canvas.width+10;
+		if(this.pos.y < -15) {
+			this.vel.y*=-1;
+		} else if(this.pos.y < -30) this.pos.y = -10;
+		if(this.pos.y > canvas.height+15) {
+			this.vel.y*=-1;	
+		} else if(this.pos.y > canvas.height+30) this.pos.y = canvas.height+10;
+
 		this.pos.x+=this.vel.x; 
 		this.pos.y+=this.vel.y;
 		this.pos.rot+=this.vel.rot;
@@ -46,6 +60,7 @@ class Component {
 
 		this.vel.x*=0.8; this.vel.y*=0.8;
 		this.acc.x*=0.95; this.acc.y*=0.95;
+
 
 	};
 	draw = function() {};
