@@ -10,7 +10,7 @@ hand = {
 }
 
 mouseState = "nothing";
-mouse = { x: 0, y: 0};
+mouse = { x: 0, y: 0, down:true};
 $("#canvas").mousemove(function(e) {
 	mouse.x = e.pageX;
 	mouse.y = e.pageY;
@@ -67,6 +67,13 @@ function setup() {
 	loop();
 }
 
+$("#canvas").mousedown(function() {
+	mouse.down = true;
+});
+$("#canvas").mouseup(function() {
+	mouse.down = false;
+});
+
 function loop() {
 
 	// clear everything
@@ -79,6 +86,9 @@ function loop() {
 
 
 	// resolve click actions
+	if(mouseState == "clicking") {
+	
+	}
 
 
 	// resolve actions
