@@ -63,12 +63,6 @@ function setup() {
 		}
 	}
 
-	// for(x=-200; x<200; x+=40) {
-	// 	for(y=-200; y<200; y+=40) {
-	// 		components.push(new SquareEarring({x:x, y:y, rot:0}, {width:30, angle:(1/12)*2*Math.PI}));
-	// 	}
-	// }
-
 	loop();
 }
 
@@ -112,14 +106,14 @@ function loop() {
 					mySpawn.push(new SquareEarring({
 						x:mouse.pos.x,
 						y:mouse.pos.y,
-						rot:0,
+						rot:Math.atan2(mouse.pos.y-lastSpawn.y, mouse.pos.x-lastSpawn.x),
 					}, {width:20, angle:(1/6)*Math.PI} ));
 					lastSpawn = {x:mouse.pos.x, y:mouse.pos.y};
 				} else if (i == 1){
 					mySpawn.push(new StackedQuads({
 						x:mouse.pos.x,
 						y:mouse.pos.y,
-						rot:0,
+						rot:Math.atan2(mouse.pos.y-lastSpawn.y, mouse.pos.x-lastSpawn.x),
 					}, {numQuads:5, angle:(1/6)*Math.PI} ));
 					lastSpawn = {x:mouse.pos.x, y:mouse.pos.y};
 					//new StackedQuads({x:0, y:0, rot:0}, {numQuads: 5})
@@ -127,7 +121,7 @@ function loop() {
 					mySpawn.push(new RandomShape({
 						x:mouse.pos.x,
 						y:mouse.pos.y,
-						rot:0,
+						rot:Math.atan2(mouse.pos.y-lastSpawn.y, mouse.pos.x-lastSpawn.x),
 					}, {vertices:3+Math.trunc(Math.random()*4), angle:(1/6)*Math.PI} ));
 					lastSpawn = {x:mouse.pos.x, y:mouse.pos.y};
 					//RandomShape({x:125, y: 125, rot: Math.PI/3}, {vertices: 8})
