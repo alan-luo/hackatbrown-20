@@ -45,7 +45,7 @@ function setup() {
 	
 	for (i = -canvas.width; i < canvas.width; i += 60){
 		for (j = -canvas.height; j < canvas.height; j+=60){
-			bg_components.push(new BackgroundShape({x: i, y: j, rot: Math.random()*2*Math.PI}, {sides: 3+ Math.trunc(Math.random()*7)}));
+			bg_components.push(new BackgroundShape({x: i, y: j, rot: Math.random()*2*Math.PI}, {sides: 3+ Math.trunc(Math.random()*4)}));
 		}
 	}
 
