@@ -74,8 +74,10 @@ $("#canvas").mouseup(function() {
 
 
 
-mySpawn = [];
+// mySpawn = [];
 lastSpawn = {x:-1000, y:-1000};
+
+spawns=[];
 
 function loop() {
 
@@ -90,13 +92,15 @@ function loop() {
 	// resolve click actions
 	if(spawnState == "default") {
 		if(mouse.down) {
-			spawnState = "spawning"
+			spawnState = "spawning";
+			spawns.push([]);
 		}
 	} else if(spawnState == "spawning") {
 		if(!mouse.down) { //create the thing
+			spawnState = "default";
 		} else { // keep spawning
 			if(distSq(lastSpawn, mouse.pos) > 900) {
-				mySpawn.push(makeRandom({
+				spawns[spawns.length-1].push(makeRandom({
 					x:mouse.pos.x,
 					y:mouse.pos.y,
 					rot:Math.atan2(mouse.pos.y-lastSpawn.y, mouse.pos.x-lastSpawn.x),
@@ -122,10 +126,20 @@ function loop() {
 	// }
 
 	// draw everything
-	for(let idx in bg_components) bg_components[idx].doDraw();
-	for(let idx in components) components[idx].doDraw();
+	for(let i in bg_components) bg_components[i].doDraw();
+	for(let i in components) components[i].doDraw();
 
-	for(let idx in mySpawn) mySpawn[idx].doDraw();
+	for(let i in spawns) {
+		for(let j=0; j<spawns[i].length-1; j++) {
+			ctx.beginPath();
+			ctx.moveTo(spawns[i][j].pos.x, spawns[i][j].pos.y);
+			ctx.lineTo(spawns[i][j+1].pos.x, spawns[i][j+1].pos.y);
+			ctx.stroke();
+		}
+		for(let j in spawns[i]) {
+			spawns[i][j].doDraw()
+		}
+	}
 		
 	// ctx.fillStyle = "red";
 	// ctx.beginPath();
