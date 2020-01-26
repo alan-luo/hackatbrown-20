@@ -285,14 +285,14 @@ function explodeFrom(center) {
 			let mySpawn = spawns[i][j];
 			let myPos = {x: mySpawn.pos.x, y: mySpawn.pos.y};
 			//console.log(dist(center, myPos));
-			if(dist(center, myPos)<300) {
+			if(dist(center, myPos)<1000) {
 				let vec = {x: myPos.x - center.x, y: myPos.y - center.y};
 				let len = dist({x:0, y:0}, vec);
 				let normVec = {x: vec.x/len, y: vec.y/len};
 				//console.log(normVec);
 
-				mySpawn.vel.x = -normVec.x*50;
-				mySpawn.vel.y = -normVec.y*50;
+				mySpawn.vel.x = -normVec.x*30;
+				mySpawn.vel.y = -normVec.y*30;
 			}
 		}
 	}
