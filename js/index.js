@@ -1,4 +1,7 @@
 let components = [];
+let bg_components = [];
+
+
 handState = "nothing";
 hand = {
 	pos: {x:0, y:0, z:0},
@@ -40,9 +43,9 @@ function setup() {
 
 	ctx.save();
 	
-	for (i = -canvas.width; i < canvas.width; i += 40){
-		for (j = -canvas.height; j < canvas.height; j+=40){
-			components.push(new BackgroundShape({x: i, y: j, rot: Math.random()*2*Math.PI}, {sides: 3+ Math.trunc(Math.random()*7)}));
+	for (i = -canvas.width; i < canvas.width; i += 60){
+		for (j = -canvas.height; j < canvas.height; j+=60){
+			bg_components.push(new BackgroundShape({x: i, y: j, rot: Math.random()*2*Math.PI}, {sides: 3+ Math.trunc(Math.random()*7)}));
 		}
 	}
 
@@ -56,6 +59,7 @@ function loop() {
 	ctx.fillRect(-canvas.width/2, -canvas.height/2, canvas.width, canvas.height);
 
 	// update all states
+	for(let idx in bg_components) bg_components[idx].update();
 	for(let idx in components) components[idx].update();
 
 
@@ -74,6 +78,7 @@ function loop() {
 	// }
 
 	// draw everything
+	for(let idx in bg_components) bg_components[idx].doDraw();
 	for(let idx in components) components[idx].doDraw();
 		
 	ctx.fillStyle = "red";
