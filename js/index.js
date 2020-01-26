@@ -23,15 +23,14 @@ $("#canvas").mousemove(function(e) {
 spawnState = "default";
 
 function makeRandom(pos) {
-	var whichThing = Math.floor(Math.random()*3);
-	// var whichThing = 1;
+	let i = Math.trunc(Math.random()*3);
 
-	if(whichThing == 0) {
-		return new RandomShape(pos, {vertices:5+Math.floor(Math.random()*3)});
-	} else if (whichThing == 1) {
-		return new SquareEarring(pos, {angle:Math.PI*2*((0.5+Math.random())/12), width:50+Math.random()*20});
-	} else if (whichThing == 2) {
-		return new StackedQuads(pos, {numQuads:5+Math.floor(Math.random()*2), size:15});
+	if (i == 0){
+		return (new SquareEarring(pos, {width:20, angle:(1/6)*Math.PI} ));
+	} else if (i == 1){
+		return (new StackedQuads(pos, {numQuads:5, size:12} ));
+	} else {
+		return (new RandomShape(pos, {vertices:3+Math.trunc(Math.random()*4), angle:(1/6)*Math.PI} ));
 	}
 }
 
@@ -99,30 +98,11 @@ function loop() {
 
 		} else { // keep spawning
 			if(distSq(lastSpawn, mouse.pos) > 900) {
-
-				let i = Math.trunc(Math.random()*3);
-
-				if (i == 0){
-					mySpawn.push(new SquareEarring({
-						x:mouse.pos.x,
-						y:mouse.pos.y,
-						rot:Math.atan2(mouse.pos.y-lastSpawn.y, mouse.pos.x-lastSpawn.x),
-					}, {width:20, angle:(1/6)*Math.PI} ));
-				} else if (i == 1){
-					mySpawn.push(new StackedQuads({
-						x:mouse.pos.x,
-						y:mouse.pos.y,
-						rot:Math.atan2(mouse.pos.y-lastSpawn.y, mouse.pos.x-lastSpawn.x),
-					}, {numQuads:5, size:12} ));
-					//new StackedQuads({x:0, y:0, rot:0}, {numQuads: 5})
-				} else {
-					mySpawn.push(new RandomShape({
-						x:mouse.pos.x,
-						y:mouse.pos.y,
-						rot:Math.atan2(mouse.pos.y-lastSpawn.y, mouse.pos.x-lastSpawn.x),
-					}, {vertices:3+Math.trunc(Math.random()*4), angle:(1/6)*Math.PI} ));
-					//RandomShape({x:125, y: 125, rot: Math.PI/3}, {vertices: 8})
-				}
+				mySpawn.push(makeRandom({
+					x:mouse.pos.x,
+					y:mouse.pos.y,
+					rot:Math.atan2(mouse.pos.y-lastSpawn.y, mouse.pos.x-lastSpawn.x),
+				}));
 				lastSpawn = {x:mouse.pos.x, y:mouse.pos.y};
 				
 			}
