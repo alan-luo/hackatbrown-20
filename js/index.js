@@ -191,6 +191,7 @@ function loop() {
 			ctx.beginPath();
 			ctx.moveTo(spawns[i][j].pos.x, spawns[i][j].pos.y);
 			ctx.lineTo(spawns[i][j+1].pos.x, spawns[i][j+1].pos.y);
+			ctx.strokeStyle = colors.getFill();
 			ctx.stroke();
 		}
 		for(let j in spawns[i]) {
