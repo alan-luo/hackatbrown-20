@@ -1,4 +1,5 @@
 class Component {
+	hue = 0;
 	pos = {x:0, y:0, rot:0};
 	vel = {x:0, y:0, rot:0};
 	acc = {x:0, y:0, rot:0};

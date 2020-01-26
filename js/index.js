@@ -113,11 +113,17 @@ function loop() {
 		} else { // keep spawning
 			if(distSq(lastSpawn, mouse.pos) > 80*80) {
 				let mySpawn = spawns[spawns.length-1];
-				mySpawn.push(makeSmol(spawnType, {
+				let myComp = makeSmol(spawnType, {
 					x:mouse.pos.x,
 					y:mouse.pos.y,
 					rot:Math.atan2(mouse.pos.y-lastSpawn.y, mouse.pos.x-lastSpawn.x),
-				}));
+				});
+				if(mySpawn.length == 0) {
+					myComp.hue = Math.random()*360;
+				} else {
+					myComp.hue = mySpawn[0].hue;
+				}
+				mySpawn.push(myComp);
 				mySpawn[mySpawn.length-1].frozen = true;
 				lastSpawn = {x:mouse.pos.x, y:mouse.pos.y};
 				
@@ -180,6 +186,7 @@ function loop() {
 	for(let i in components) components[i].doDraw();
 
 	for(let i in spawns) {
+		if (spawns[i].length>0) colors.setHue(spawns[i][0].hue);
 		for(let j=0; j<spawns[i].length-1; j++) {
 			ctx.beginPath();
 			ctx.moveTo(spawns[i][j].pos.x, spawns[i][j].pos.y);
