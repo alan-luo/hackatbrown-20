@@ -101,6 +101,8 @@ function loop() {
 			spawnState = "spawning";
 			spawnType = Math.floor(Math.random()*3);
 			spawns.push([]);
+			backgroundAnimate({x:mouse.pos.x, y:mouse.pos.y});
+
 		}
 	} else if(spawnState == "spawning") {
 		if(!mouse.down) { //create the thing
@@ -109,7 +111,9 @@ function loop() {
 			for(let i=0; i<mySpawn.length; i++) {
 				mySpawn[i].frozen = false;
 			}
-			mySpawn[0].autonomous = true;
+			if (mySpawn[0] != null){
+				mySpawn[0].autonomous = true;
+			}
 			spawnState = "default";
 		} else { // keep spawning
 			if(distSq(lastSpawn, mouse.pos) > 80*80) {
@@ -217,12 +221,12 @@ function explodeFrom(center) {
 
 			let mySpawn = spawns[i][j];
 			let myPos = {x: mySpawn.pos.x, y: mySpawn.pos.y};
-			console.log(dist(center, myPos));
+			//console.log(dist(center, myPos));
 			if(dist(center, myPos)<300) {
 				let vec = {x: myPos.x - center.x, y: myPos.y - center.y};
 				let len = dist({x:0, y:0}, vec);
 				let normVec = {x: vec.x/len, y: vec.y/len};
-				console.log(normVec);
+				//console.log(normVec);
 
 				mySpawn.vel.x = normVec.x*50;
 				mySpawn.vel.y = normVec.y*50;
@@ -230,6 +234,25 @@ function explodeFrom(center) {
 		}
 	}
 }
+
+function backgroundAnimate(center) {
+		for(i in bg_components) {
+
+			let bg_Shape = bg_components[i];
+			let myPos = {x: bg_Shape.pos.x, y: bg_Shape.pos.y};
+			console.log(dist(center, myPos));
+			if(dist(center, myPos)<100) {
+				let vec = {x: myPos.x - center.x, y: myPos.y - center.y};
+				let len = dist({x:0, y:0}, vec);
+				let normVec = {x: vec.x/len, y: vec.y/len};
+				console.log(normVec);
+
+				bg_Shape.vel.x = normVec.x*10;
+				bg_Shape.vel.y = normVec.y*10;
+			}
+		}
+}
+
 $(document).keypress(function(e) {
 	if(e.keyCode == 120) explodeFrom({x:mouse.pos.x, y:mouse.pos.y});
 })
