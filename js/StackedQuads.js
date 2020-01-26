@@ -7,8 +7,8 @@ class StackedQuads extends Component {
 		this.numQuads = args.numQuads;
 
 		for(let i=0; i<this.numQuads; i++) {
-			let qWidth = 25;
-			let qHeight = 35;
+			let qWidth = args.size;
+			let qHeight = 1.3*args.size;
 			this.quads.push({
 				angle:(2*Math.PI/this.numQuads)*i,
 				vertices: [
