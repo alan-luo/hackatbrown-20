@@ -9,6 +9,13 @@ hand = {
 	pinch: -1,
 }
 
+mouseState = "nothing";
+mouse = { x: 0, y: 0};
+$("#canvas").mousemove(function(e) {
+	mouse.x = e.pageX;
+	mouse.y = e.pageY;
+});
+
 function makeRandom(pos) {
 	var whichThing = Math.floor(Math.random()*3);
 	// var whichThing = 1;
@@ -45,7 +52,7 @@ function setup() {
 	
 	for (i = -canvas.width; i < canvas.width; i += 60){
 		for (j = -canvas.height; j < canvas.height; j+=60){
-			if(Math.random()>0.9) {
+			if(Math.random()>0.3) {
 				bg_components.push(new BackgroundShape({x: i, y: j, rot: Math.random()*2*Math.PI}, {sides: 3+ Math.trunc(Math.random()*7)}));
 			}
 		}
@@ -69,6 +76,9 @@ function loop() {
 	// update all states
 	for(let idx in bg_components) bg_components[idx].update();
 	for(let idx in components) components[idx].update();
+
+
+	// resolve click actions
 
 
 	// resolve actions
