@@ -303,7 +303,6 @@ function backgroundAnimate(center) {
 
 			let bg_Shape = bg_components[i];
 			let myPos = {x: bg_Shape.pos.x, y: bg_Shape.pos.y};
-			console.log(dist(center, myPos));
 			if(dist(center, myPos)<100) {
 				let vec = {x: myPos.x - center.x, y: myPos.y - center.y};
 				let len = dist({x:0, y:0}, vec);
@@ -400,10 +399,10 @@ Leap.loop(controllerOptions, function(frame) {
 				} else { //vertical
 				  if(gesture.direction[1] > 0){
 				      swipeDirection = "up";
-				      swipe({x:0, y:-1});
+				      // swipe({x:0, y:-1});
 				  } else {
 				      swipeDirection = "down";
-				      swipe({x:0, y:1});
+				      // swipe({x:0, y:1});
 				  }                  
 				}
 	        }
