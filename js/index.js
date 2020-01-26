@@ -161,6 +161,7 @@ function loop() {
 
 	// do it again
 	window.requestAnimationFrame(loop);
+	
 }
 
 

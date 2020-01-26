@@ -11,7 +11,7 @@ class RandomShape extends Component {
 		this.endVert = 4+Math.round(Math.random())*(this.vertices-5);
 
 		for (let i = 0; i < this.vertices; i++) {
-			let radius = 50 + Math.random()*30;
+			let radius = 15 + Math.random()*7;
 			this.xVal[i] = Math.cos((360*i/this.vertices)*Math.PI/180)*radius;
 			this.yVal[i] = Math.sin((360*i/this.vertices)*Math.PI/180)*radius;
 		}
