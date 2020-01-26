@@ -63,12 +63,6 @@ function setup() {
 		}
 	}
 
-	// for(x=-200; x<200; x+=40) {
-	// 	for(y=-200; y<200; y+=40) {
-	// 		components.push(new SquareEarring({x:x, y:y, rot:0}, {width:30, angle:(1/12)*2*Math.PI}));
-	// 	}
-	// }
-
 	loop();
 }
 
@@ -105,11 +99,13 @@ function loop() {
 
 		} else { // keep spawning
 			if(distSq(lastSpawn, mouse.pos) > 900) {
+
+
 				mySpawn.push(new SquareEarring({
 					x:mouse.pos.x,
 					y:mouse.pos.y,
-					rot:0,
-				}, {width:20, angle:(1/6)*Math.PI} ));
+					rot:Math.atan2(mouse.pos.y-lastSpawn.y, mouse.pos.x-lastSpawn.x),
+				}, {width:20, angle:(1/6)*Math.PI}));
 				lastSpawn = {x:mouse.pos.x, y:mouse.pos.y};
 			}
 		}
