@@ -230,8 +230,22 @@ function explodeFrom(center) {
 		}
 	}
 }
+function swipe(direction) {
+	for(i in spawns) {
+		for(j in spawns[i]) {
+			let mySpawn = spawns[i][j];
+			mySpawn.vel.x = direction.x * 70;
+			mySpawn.vel.y = direction.y * 70;
+		}
+	}	
+}
 $(document).keypress(function(e) {
+	console.log(e.keyCode);
 	if(e.keyCode == 120) explodeFrom({x:mouse.pos.x, y:mouse.pos.y});
+	else if(e.keyCode == 119) swipe({x:0, y:-1});
+	else if(e.keyCode == 115) swipe({x:0, y:1});
+	else if(e.keyCode == 97) swipe({x:-1, y:0});
+	else if(e.keyCode == 100) swipe({x:1, y:0});
 })
 
 
