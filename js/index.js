@@ -11,8 +11,8 @@ let hand = {
 	pinch: -1,
 }
 function leapToWorld(leapPos) {
-	return { x: leapPos[0]*1.5+canvas.width/2,
-		     y: leapPos[2]*1.5+canvas.height/2,
+	return { x: leapPos[0]*2.5+canvas.width/2,
+		     y: leapPos[2]*2.5+canvas.height/2,
 			 z: leapPos[1]
 	};
 }
