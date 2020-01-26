@@ -97,7 +97,8 @@ class BackgroundShape extends Component {
 			ctx.lineTo(this.xVert[i], this.yVert[i]);
 		}
 		ctx.closePath();
-		ctx.strokeStyle = '#C0C0C0';	
+		ctx.lineWidth = 1;
+		ctx.strokeStyle = colors.polys;	
 		ctx.stroke();
 	}
 

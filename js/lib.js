@@ -16,8 +16,9 @@ let colors = (function() {
 
 	return ({
 		// background:`hsl(${centerHue}, 30%, 15%)`,
-		background:"#EEEEE9",
+		background:"#111122",
 		stroke:"rgb(36,70,43)",
+		polys:'#E3E3E3',
 		fills:fillArr,
 		getFill: function() {
 			colorIndex = (colorIndex+1) % fillArr.length;
