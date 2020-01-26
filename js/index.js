@@ -109,6 +109,7 @@ function loop() {
 			for(let i=0; i<mySpawn.length; i++) {
 				mySpawn[i].frozen = false;
 			}
+			mySpawn[0].autonomous = true;
 			spawnState = "default";
 		} else { // keep spawning
 			if(distSq(lastSpawn, mouse.pos) > 80*80) {
@@ -176,9 +177,8 @@ function loop() {
 			// add force to acceleration
 			s2.acc.x+=force.x; s2.acc.y+=force.y;
 			// s1.acc.x-=force.x; s1.acc.y-=force.y;
-
-			s1.update(); s2.update();
 		}
+		for(let j in spawns[i]) spawns[i][j].update();
 	}
 
 	// draw everything

@@ -7,6 +7,7 @@ class Component {
 	startIndex = 0;
 	colorIndex = 0;
 	frozen = false;
+	autonomous = false;
 	// pos: {x:, y:}, args:{val1:, val2:, ...}
 	constructor(pos, args) { 
 		this.pos = pos;
@@ -15,6 +16,26 @@ class Component {
 
 	update = function() {
 		if(this.frozen) return;
+		if(this.autonomous) {
+			// this.acc.x = 0; this.acc.y = 0;
+			let vec = {
+				x:mouse.pos.x-this.pos.x,
+				y:mouse.pos.y-this.pos.y,
+			};
+			let len = dist({x:0, y:0}, vec);
+			let normVec = {x: vec.x/len, y:vec.y/len};
+			if(len > 200) {
+				this.acc.x += normVec.x*0.015;
+				this.acc.y += normVec.y*0.015;
+			}
+
+		}
+
+		let goalAngle = Math.atan2(this.vel.y, this.vel.x);
+		this.acc.rot+=(goalAngle-this.pos.rot)*0.00001;
+		this.vel.rot*=0.99;
+		this.acc.rot*=0.9;
+
 		this.pos.x+=this.vel.x; 
 		this.pos.y+=this.vel.y;
 		this.pos.rot+=this.vel.rot;
@@ -25,7 +46,6 @@ class Component {
 
 		this.vel.x*=0.8; this.vel.y*=0.8;
 		this.acc.x*=0.95; this.acc.y*=0.95;
-
 
 	};
 	draw = function() {};
