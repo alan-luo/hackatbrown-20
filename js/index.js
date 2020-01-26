@@ -14,7 +14,7 @@ function makeRandom(pos) {
 	// var whichThing = 1;
 
 	if(whichThing == 0) {
-		return new RandomShape(pos, {vertices:5+Math.floor(Math.random(3))});
+		return new RandomShape(pos, {vertices:5+Math.floor(Math.random()*3)});
 	} else if (whichThing == 1) {
 		return new SquareEarring(pos, {angle:Math.PI*2*((0.5+Math.random())/12), width:50+Math.random()*20});
 	} else if (whichThing == 2) {
