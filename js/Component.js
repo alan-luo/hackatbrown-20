@@ -17,14 +17,21 @@ class Component {
 	update = function() {
 		if(this.frozen) return;
 		if(this.autonomous) {
-			// this.acc.x = 0; this.acc.y = 0;
 			let vec = {
 				x:mouse.pos.x-this.pos.x,
 				y:mouse.pos.y-this.pos.y,
 			};
+			if(hand.obj != null) {
+				vec = {
+					x:hand.pos.x-this.pos.x,
+					y:hand.pos.y-this.pos.y,	
+				}
+			}
+			// this.acc.x = 0; this.acc.y = 0;
+			
 			let len = dist({x:0, y:0}, vec);
 			let normVec = {x: vec.x/len, y:vec.y/len};
-			if(len > 200) {
+			if(len > 150) {
 				this.acc.x += normVec.x*0.015;
 				this.acc.y += normVec.y*0.015;
 			}

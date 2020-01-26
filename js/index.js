@@ -4,9 +4,23 @@ let bg_components = [];
 
 let handState = "nothing";
 let hand = {
-	pos: {x:0, y:0, z:0},
+	obj: null,
+	// pos: {x:canvas.width/2, y:canvas.height/2, z:0},
+	pos: {x:canvas.width/2, y:canvas.height/2},
 	vel: {x:0, y:0, z:0},
 	pinch: -1,
+}
+function leapToWorld(leapPos) {
+	return { x: leapPos[0]*1.5+canvas.width/2,
+		     y: leapPos[2]*1.5+canvas.height/2,
+			 z: leapPos[1]
+	};
+}
+function leapToWorldLocal(leapPos) {
+	return { x: leapPos[0]*1.5,
+		     y: leapPos[2]*1.5,
+			 z: leapPos[1]
+	};
 }
 
 let mouseState = "nothing";
@@ -22,6 +36,7 @@ $("#canvas").mousemove(function(e) {
 });
 
 spawnState = "default";
+spawnSource = "mouse";
 
 function makeSmol(i, pos) {
 	if (i == 0){
@@ -95,15 +110,30 @@ function loop() {
 	for(let idx in bg_components) bg_components[idx].update();
 	for(let idx in components) components[idx].update();
 
+	// resolve actions
+	if(handState == "pinching") {
+		if(hand.pinch < 0.2) {
+			handState = "nothing";
+		}
+	}
+
 	// resolve click actions
 	if(spawnState == "default") {
 		if(mouse.down) {
 			spawnState = "spawning";
+			spawnSource = "mouse";
+			spawnType = Math.floor(Math.random()*3);
+			spawns.push([]);
+		}
+		if(hand.pinch > 0.7) {
+			handState = "pinching";
+			spawnState = "spawning";
+			spawnSource = "hand";
 			spawnType = Math.floor(Math.random()*3);
 			spawns.push([]);
 		}
 	} else if(spawnState == "spawning") {
-		if(!mouse.down) { //create the thing
+		if((spawnSource == "mouse" && !mouse.down) || (spawnSource=="hand" && handState=="nothing")) { //create the thing
 			let mySpawn = spawns[spawns.length-1];
 
 			for(let i=0; i<mySpawn.length; i++) {
@@ -111,40 +141,45 @@ function loop() {
 			}
 			mySpawn[0].autonomous = true;
 			spawnState = "default";
-		} else { // keep spawning
-			if(distSq(lastSpawn, mouse.pos) > 80*80) {
-				let mySpawn = spawns[spawns.length-1];
-				let myComp = makeSmol(spawnType, {
-					x:mouse.pos.x,
-					y:mouse.pos.y,
-					rot:Math.atan2(mouse.pos.y-lastSpawn.y, mouse.pos.x-lastSpawn.x),
-				});
-				if(mySpawn.length == 0) {
-					myComp.hue = Math.random()*360;
-				} else {
-					myComp.hue = mySpawn[0].hue;
+		} else if((spawnSource=="mouse" && mouse.down) || (spawnSource=="hand" && handState=="pinching")) { // keep spawning
+			if(spawnSource == "mouse") {
+				if(distSq(lastSpawn, mouse.pos) > 80*80) {
+					let mySpawn = spawns[spawns.length-1];
+					let myComp = makeSmol(spawnType, {
+						x:mouse.pos.x,
+						y:mouse.pos.y,
+						rot:Math.atan2(mouse.pos.y-lastSpawn.y, mouse.pos.x-lastSpawn.x),
+					});
+					if(mySpawn.length == 0) {
+						myComp.hue = Math.random()*360;
+					} else {
+						myComp.hue = mySpawn[0].hue;
+					}
+					mySpawn.push(myComp);
+					mySpawn[mySpawn.length-1].frozen = true;
+					lastSpawn = {x:mouse.pos.x, y:mouse.pos.y};
 				}
-				mySpawn.push(myComp);
-				mySpawn[mySpawn.length-1].frozen = true;
-				lastSpawn = {x:mouse.pos.x, y:mouse.pos.y};
-				
+			} else if(spawnSource == "hand") {
+				if(distSq(lastSpawn, hand.pos) > 80*80) {
+					let mySpawn = spawns[spawns.length-1];
+					let myComp = makeSmol(spawnType, {
+						x:hand.pos.x,
+						y:hand.pos.y,
+						rot:Math.atan2(hand.pos.y-lastSpawn.y, hand.pos.x-lastSpawn.x),
+					});
+					if(mySpawn.length == 0) {
+						myComp.hue = Math.random()*360;
+					} else {
+						myComp.hue = mySpawn[0].hue;
+					}
+					mySpawn.push(myComp);
+					mySpawn[mySpawn.length-1].frozen = true;
+					lastSpawn = {x:hand.pos.x, y:hand.pos.y};
+				}
 			}
 		}
 	}
 
-	// resolve actions
-	// if(handState == "nothing") {
-	// 	if(hand.pinch > 0.7) {
-	// 		handState = "pinching";
-	// 		components.push(new StackedQuads({x:0, y:0, rot:0}, {numQuads: 5}));
-	// 	}
-	// } else if(handState == "pinching") {
-	// 	components[components.length-1].pos.x = hand.pos.x;
-	// 	components[components.length-1].pos.y = hand.pos.y;	
-	// 	if(hand.pinch < 0.2) {
-	// 		handState = "nothing";
-	// 	}
-	// }
 
 	// update all states
 	for(let idx in bg_components) bg_components[idx].update();
@@ -197,11 +232,38 @@ function loop() {
 			spawns[i][j].doDraw()
 		}
 	}
-		
-	// ctx.fillStyle = "red";
-	// ctx.beginPath();
-	// ctx.arc(hand.pos.x, hand.pos.y, 5, 0, 2*Math.PI);
-	// ctx.fill();
+
+	//draw leap hand
+	if(hand.obj != null) {
+		let fingers = hand.obj.fingers;
+
+		ctx.strokeStyle="#000000";
+		for(let i=0; i<fingers.length; i++) {
+			let finger = fingers[i];
+
+			let p1 = leapToWorld(finger.carpPosition);
+			let p2 = leapToWorld(finger.mcpPosition);
+			let p3 = leapToWorld(finger.pipPosition);
+			let p4 = leapToWorld(finger.dipPosition);
+
+			ctx.save();
+			let scaleFactor = 1+hand.pos.z*0.01;
+			// ctx.scale(scaleFactor, scaleFactor);
+
+			let defLineWidth = ctx.lineWidth;
+			ctx.beginPath();
+			ctx.moveTo(p1.x, p1.y);
+			ctx.lineTo(p2.x, p2.y);
+			ctx.lineWidth="4"; ctx.stroke();
+			ctx.lineTo(p3.x, p3.y);
+			ctx.lineWidth="2"; ctx.stroke();
+			ctx.lineTo(p4.x, p4.y);
+			ctx.lineWidth="1"; ctx.stroke();
+			ctx.lineWidth = defLineWidth;
+
+			ctx.restore();
+		}
+	}
 
 	// leap motion debug
 	debug();
@@ -268,22 +330,60 @@ setup();
 let controllerOptions = {enableGestures: true};
 
 
-// Leap.loop(controllerOptions, function(frame) {
-// 	// if (paused) return; // skip this update
+Leap.loop(controllerOptions, function(frame) {
+	// if (paused) return; // skip this update
 
-// 	if(frame.hands.length > 0) {
-// 		let myHand = frame.hands[0];
+	if(frame.hands.length > 0) {
+		let myHand = frame.hands[0];
+		hand.obj = myHand;
 
-// 		hand.pos.x += myHand.palmVelocity[0] / 50;
-// 		hand.pos.z += myHand.palmVelocity[1] / 50;
-// 		hand.pos.y += myHand.palmVelocity[2] / 50;
+		// hand.pos.x += myHand.palmVelocity[0] / 50;
+		// hand.pos.z += myHand.palmVelocity[1] / 50;
+		// hand.pos.y += myHand.palmVelocity[2] / 50;
 
-// 		// hand.pos.x = myHand.palmVelocity[0];
-// 		// hand.pos.z = myHand.palmVelocity[1];
-// 		// hand.pos.y = myHand.palmVelocity[2];
+		let handPos = leapToWorld(myHand.palmPosition);
 
-// 		hand.pinch = myHand.pinchStrength;
-// 		// myVel = hand.palmVelocity;
-// 	}
+		hand.pos.x = handPos.x;
+		hand.pos.y = handPos.y;
+		// hand.pos.z = handPos.z;
 
-// });
+		hand.pinch = myHand.pinchStrength;
+		// myVel = hand.palmVelocity;
+	}
+
+	if(frame.gestures.length>0) {
+		frame.gestures.forEach(function(gesture){
+			if(gesture.type == "circle") {
+				
+			} else if(gesture.type=="keyTap") {
+              console.log("Key Tap Gesture");
+              explodeFrom(hand.pos);
+			} else if(gesture.type=="keyTap") {
+			  console.log("Screen Tap Gesture");
+			} else if(gesture.type=="screenTap") {
+
+			} else if(gesture.type=="swipe") {
+				var isHorizontal = Math.abs(gesture.direction[0]) > Math.abs(gesture.direction[1]);
+				//Classify as right-left or up-down
+				if(isHorizontal){
+				  if(gesture.direction[0] > 0){
+				      swipeDirection = "right";
+				      swipe({x:1, y:0});
+				  } else {
+				      swipeDirection = "left";
+				      swipe({x:-1, y:0});
+				  }
+				} else { //vertical
+				  if(gesture.direction[1] > 0){
+				      swipeDirection = "up";
+				      swipe({x:0, y:-1});
+				  } else {
+				      swipeDirection = "down";
+				      swipe({x:0, y:1});
+				  }                  
+				}
+	        }
+	    });
+	}
+
+});
