@@ -105,16 +105,37 @@ function loop() {
 
 		} else { // keep spawning
 			if(distSq(lastSpawn, mouse.pos) > 900) {
-				mySpawn.push(new SquareEarring({
-					x:mouse.pos.x,
-					y:mouse.pos.y,
-					rot:0,
-				}, {width:20, angle:(1/6)*Math.PI} ));
-				lastSpawn = {x:mouse.pos.x, y:mouse.pos.y};
+
+				let i = Math.trunc(Math.random()*3);
+
+				if (i == 0){
+					mySpawn.push(new SquareEarring({
+						x:mouse.pos.x,
+						y:mouse.pos.y,
+						rot:0,
+					}, {width:20, angle:(1/6)*Math.PI} ));
+					lastSpawn = {x:mouse.pos.x, y:mouse.pos.y};
+				} else if (i == 1){
+					mySpawn.push(new StackedQuads({
+						x:mouse.pos.x,
+						y:mouse.pos.y,
+						rot:0,
+					}, {numQuads:5, angle:(1/6)*Math.PI} ));
+					lastSpawn = {x:mouse.pos.x, y:mouse.pos.y};
+					//new StackedQuads({x:0, y:0, rot:0}, {numQuads: 5})
+				} else {
+					mySpawn.push(new RandomShape({
+						x:mouse.pos.x,
+						y:mouse.pos.y,
+						rot:0,
+					}, {vertices:3+Math.trunc(Math.random()*4), angle:(1/6)*Math.PI} ));
+					lastSpawn = {x:mouse.pos.x, y:mouse.pos.y};
+					//RandomShape({x:125, y: 125, rot: Math.PI/3}, {vertices: 8})
+				}
+				
 			}
 		}
 	}
-
 
 	// resolve actions
 	// if(handState == "nothing") {
@@ -168,22 +189,22 @@ setup();
 let controllerOptions = {enableGestures: true};
 
 
-Leap.loop(controllerOptions, function(frame) {
-	// if (paused) return; // skip this update
+// Leap.loop(controllerOptions, function(frame) {
+// 	// if (paused) return; // skip this update
 
-	if(frame.hands.length > 0) {
-		let myHand = frame.hands[0];
+// 	if(frame.hands.length > 0) {
+// 		let myHand = frame.hands[0];
 
-		hand.pos.x += myHand.palmVelocity[0] / 50;
-		hand.pos.z += myHand.palmVelocity[1] / 50;
-		hand.pos.y += myHand.palmVelocity[2] / 50;
+// 		hand.pos.x += myHand.palmVelocity[0] / 50;
+// 		hand.pos.z += myHand.palmVelocity[1] / 50;
+// 		hand.pos.y += myHand.palmVelocity[2] / 50;
 
-		// hand.pos.x = myHand.palmVelocity[0];
-		// hand.pos.z = myHand.palmVelocity[1];
-		// hand.pos.y = myHand.palmVelocity[2];
+// 		// hand.pos.x = myHand.palmVelocity[0];
+// 		// hand.pos.z = myHand.palmVelocity[1];
+// 		// hand.pos.y = myHand.palmVelocity[2];
 
-		hand.pinch = myHand.pinchStrength;
-		// myVel = hand.palmVelocity;
-	}
+// 		hand.pinch = myHand.pinchStrength;
+// 		// myVel = hand.palmVelocity;
+// 	}
 
-});
+// });
