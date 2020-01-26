@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<title>Procedural Generation</title>
-
+		<link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="./css/style.css">
 	</head>
 	<body>
@@ -11,6 +11,24 @@
 				<p>position: <span id="data-position">-1</span></p>
 				<p>pinch: <span id="data-pinch">-1</span></p>
 			</div> -->
+
+			<div class="menu" id="help">
+				<p class="h-button">?</p>				
+				<div class="inner">
+					<p><b>Mouse:</b></p>
+					<ul>
+						<li>Click and drag to make things</li>
+						<li>'X' to explode</li>
+						<li>'WASD' to slide</li>
+					</ul>
+					<p><b>Leap Motion:</b></p>
+					<ul>
+						<li>Pinch and drag to make things</li>
+						<li>Tap downward to explode</li>
+						<li>Swipe to slide</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 		<canvas id="canvas"></canvas>
 
@@ -29,6 +47,18 @@
 		<script src="./js/SquareEarring.js"></script>
 
 		<script src="./js/index.js"></script>
+		<script>
+			let showing = false;
+
+			$(".h-button").click(function() {
+				if(showing) {
+					$("#help").animate({ left:"-300px" });
+				} else {
+					$("#help").animate({ left:"0" });
+				}
+				showing = !showing;
+			});
+		</script>
 
 	</body>
 </html>

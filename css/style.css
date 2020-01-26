@@ -16,6 +16,41 @@ canvas {
 #debug {
 	left:0;
 }
-#toolbar {
-	right:0;
+
+#help {
+	font-family: 'Quicksand', sans-serif;
+	font-size:16pt;
+	
+	position:absolute;
+
+	left:-300px;
+	width:300px;
+}
+.inner {
+	margin:25px;
+}
+.h-button {
+	font-family: 'Quicksand', sans-serif;
+
+	font-size:24pt;
+	background:#888;
+	width:50px;
+	height:50px;
+	text-align:center;
+	line-height:50px;
+	border-radius:50%;
+	color:#EEEEE9;
+	background:#999;
+
+	position:absolute;
+	margin:20px;
+	cursor:pointer;
+	transition:background 0.2s;
+	right:-100px;
+}
+.h-button:hover {
+	background:#AAA;
+}
+#help ul {
+	line-height:1.5em;
 }
