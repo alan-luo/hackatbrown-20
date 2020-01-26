@@ -38,3 +38,60 @@ class Box extends Component {
 		ctx.fillRect(0, 0, this.width, this.width);
 	}
 }
+
+class BackgroundShape extends Component {
+	size = 10;
+	sides = 0;
+	inAngle = 0;
+	xVert = null;
+	yVert = null;
+	angularVel = 0.7;
+	angularAccel = +0.2;
+	constructor(pos, args){
+		super(pos, {});
+		this.sides = args.sides;
+		this.inAngle = 2*Math.PI/this.sides;
+		this.xVert = new Array(this.sides);
+		this.yVert = new Array(this.sides);
+		
+
+		for (let i = 0; i < this.sides; i++){
+			this.xVert[i] = this.size*(Math.cos(i*this.inAngle));
+			this.yVert[i] = this.size*(Math.sin(i*this.inAngle));
+		}
+
+	}
+	update = function() {
+
+		
+		for (let i = 0; i < this.sides; i++){
+			this.xVert[i] = this.size*(Math.cos(i*this.inAngle+this.angularVel));
+			this.yVert[i] = this.size*(Math.sin(i*this.inAngle+this.angularVel));
+		}
+
+		this.angularVel = this.angularVel + this.angularAccel; 
+		this.angularAccel = this.angularAccel - 0.002;
+		if (this.angularVel <= 0){
+			this.angularVel = 0;
+			this.angularAccel = 0;
+		}
+		// if (this.size > 10){
+		// 	this.size = this.size - 1;
+		// } else if (this.size < 0){
+		// 	this.sides = 3+Math.trunc(Math.random()*7);
+		// 	this.size = this.size + 0.01;
+		// } else {
+		// 	this.size = this.size + 0.01;
+		// }
+	}
+	draw = function() {
+
+		ctx.beginPath();
+		for (let i = 0; i < this.sides; i++){
+			ctx.lineTo(this.xVert[i], this.yVert[i]);
+		}
+		ctx.closePath();
+		ctx.stroke();
+	}
+
+}
