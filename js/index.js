@@ -37,7 +37,14 @@ function setup() {
 	resize();
 	console.log(canvas.width, canvas.height);;
 	ctx.translate(canvas.width/2, canvas.height/2);
+
 	ctx.save();
+	
+	for (i = -canvas.width; i < canvas.width; i += 40){
+		for (j = -canvas.height; j < canvas.height; j+=40){
+			components.push(new BackgroundShape({x: i, y: j, rot: Math.random()*2*Math.PI}, {sides: 3+ Math.trunc(Math.random()*7)}));
+		}
+	}
 
 	loop();
 }
@@ -79,7 +86,19 @@ function loop() {
 
 	// do it again
 	window.requestAnimationFrame(loop);
+
 }
+mouse = { x: 0, y: 0};
+$("#canvas").mousemove(function(e) {
+	mouse.x = e.pageX;
+	mouse.y = e.pageY;
+});
+
+
+
+
+// components.push(new RandomShape({x:125, y: 125, rot: Math.PI/3}, {vertices: 8}));
+// components.push(new RandomShape({x:10, y: -10, rot:Math.PI}, {vertices: 6}));
 
 // components.push(new StackedQuads({x:0, y:0, rot:0}, {numQuads: 5}));
 components.push(makeRandom({x: 0, y: 0, rot: 0}));
@@ -88,6 +107,7 @@ components.push(makeRandom({x: 0, y: -100, rot: 0}));
 setup();
 
 // --- leap motion --------------
+
 
 
 let controllerOptions = {enableGestures: true};
