@@ -131,6 +131,8 @@ function loop() {
 			spawnSource = "hand";
 			spawnType = Math.floor(Math.random()*3);
 			spawns.push([]);
+			backgroundAnimate({x:mouse.pos.x, y:mouse.pos.y});
+
 		}
 	} else if(spawnState == "spawning") {
 		if((spawnSource == "mouse" && !mouse.down) || (spawnSource=="hand" && handState=="nothing")) { //create the thing
@@ -139,7 +141,9 @@ function loop() {
 			for(let i=0; i<mySpawn.length; i++) {
 				mySpawn[i].frozen = false;
 			}
-			mySpawn[0].autonomous = true;
+			if (mySpawn[0] != null){
+				mySpawn[0].autonomous = true;
+			}
 			spawnState = "default";
 		} else if((spawnSource=="mouse" && mouse.down) || (spawnSource=="hand" && handState=="pinching")) { // keep spawning
 			if(spawnSource == "mouse") {
@@ -226,6 +230,7 @@ function loop() {
 			ctx.beginPath();
 			ctx.moveTo(spawns[i][j].pos.x, spawns[i][j].pos.y);
 			ctx.lineTo(spawns[i][j+1].pos.x, spawns[i][j+1].pos.y);
+			ctx.strokeStyle = colors.getFill();
 			ctx.stroke();
 		}
 		for(let j in spawns[i]) {
@@ -279,12 +284,12 @@ function explodeFrom(center) {
 
 			let mySpawn = spawns[i][j];
 			let myPos = {x: mySpawn.pos.x, y: mySpawn.pos.y};
-			console.log(dist(center, myPos));
+			//console.log(dist(center, myPos));
 			if(dist(center, myPos)<300) {
 				let vec = {x: myPos.x - center.x, y: myPos.y - center.y};
 				let len = dist({x:0, y:0}, vec);
 				let normVec = {x: vec.x/len, y: vec.y/len};
-				console.log(normVec);
+				//console.log(normVec);
 
 				mySpawn.vel.x = normVec.x*50;
 				mySpawn.vel.y = normVec.y*50;
@@ -292,6 +297,25 @@ function explodeFrom(center) {
 		}
 	}
 }
+
+function backgroundAnimate(center) {
+		for(i in bg_components) {
+
+			let bg_Shape = bg_components[i];
+			let myPos = {x: bg_Shape.pos.x, y: bg_Shape.pos.y};
+			console.log(dist(center, myPos));
+			if(dist(center, myPos)<100) {
+				let vec = {x: myPos.x - center.x, y: myPos.y - center.y};
+				let len = dist({x:0, y:0}, vec);
+				let normVec = {x: vec.x/len, y: vec.y/len};
+				console.log(normVec);
+
+				bg_Shape.vel.x = normVec.x*10;
+				bg_Shape.vel.y = normVec.y*10;
+			}
+		}
+}
+
 function swipe(direction) {
 	for(i in spawns) {
 		for(j in spawns[i]) {

@@ -120,29 +120,6 @@ class BackgroundShape extends Component {
 		}
 
 	}
-	update = function() {
-
-		
-		for (let i = 0; i < this.sides; i++){
-			this.xVert[i] = this.size*(Math.cos(i*this.inAngle+this.angularVel));
-			this.yVert[i] = this.size*(Math.sin(i*this.inAngle+this.angularVel));
-		}
-
-		this.angularVel = this.angularVel + this.angularAccel; 
-		this.angularAccel = this.angularAccel - 0.002;
-		if (this.angularVel <= 0){
-			this.angularVel = 0;
-			this.angularAccel = 0;
-		}
-		// if (this.size > 10){
-		// 	this.size = this.size - 1;
-		// } else if (this.size < 0){
-		// 	this.sides = 3+Math.trunc(Math.random()*7);
-		// 	this.size = this.size + 0.01;
-		// } else {
-		// 	this.size = this.size + 0.01;
-		// }
-	}
 	draw = function() {
 
 		ctx.beginPath();
