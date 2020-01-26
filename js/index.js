@@ -9,6 +9,13 @@ hand = {
 	pinch: -1,
 }
 
+mouseState = "nothing";
+mouse = { x: 0, y: 0};
+$("#canvas").mousemove(function(e) {
+	mouse.x = e.pageX;
+	mouse.y = e.pageY;
+});
+
 function makeRandom(pos) {
 	var whichThing = Math.floor(Math.random()*3);
 	// var whichThing = 1;
@@ -67,6 +74,9 @@ function loop() {
 	// update all states
 	for(let idx in bg_components) bg_components[idx].update();
 	for(let idx in components) components[idx].update();
+
+
+	// resolve click actions
 
 
 	// resolve actions
