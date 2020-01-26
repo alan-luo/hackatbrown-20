@@ -10,6 +10,7 @@ let hand = {
 }
 
 let mouseState = "nothing";
+let spawnType = 0;
 let mouse = { 
 	pos: {x: 0, y: 0}, 
 	down:false 
@@ -22,16 +23,19 @@ $("#canvas").mousemove(function(e) {
 
 spawnState = "default";
 
-function makeRandom(pos) {
-	let i = Math.trunc(Math.random()*3);
-
+function makeSmol(i, pos) {
 	if (i == 0){
 		return (new SquareEarring(pos, {width:20, angle:(1/6)*Math.PI} ));
 	} else if (i == 1){
 		return (new StackedQuads(pos, {numQuads:5, size:12} ));
 	} else {
-		return (new RandomShape(pos, {vertices:3+Math.trunc(Math.random()*4), angle:(1/6)*Math.PI} ));
+		return (new RandomShape(pos, {vertices:5+Math.trunc(Math.random()*2), angle:(1/6)*Math.PI} ));
 	}
+}
+
+function makeRandom(pos) {
+	let i = Math.trunc(Math.random()*3);
+	return makeSmol(i, pos);	
 }
 
 let canv = $("#canvas");
@@ -95,6 +99,7 @@ function loop() {
 	if(spawnState == "default") {
 		if(mouse.down) {
 			spawnState = "spawning";
+			spawnType = Math.floor(Math.random()*3);
 			spawns.push([]);
 		}
 	} else if(spawnState == "spawning") {
@@ -108,7 +113,7 @@ function loop() {
 		} else { // keep spawning
 			if(distSq(lastSpawn, mouse.pos) > 80*80) {
 				let mySpawn = spawns[spawns.length-1];
-				mySpawn.push(makeRandom({
+				mySpawn.push(makeSmol(spawnType, {
 					x:mouse.pos.x,
 					y:mouse.pos.y,
 					rot:Math.atan2(mouse.pos.y-lastSpawn.y, mouse.pos.x-lastSpawn.x),
@@ -163,8 +168,8 @@ function loop() {
 			let force = {x:vecNorm.x*displc*0.0001, y:vecNorm.y*displc*0.0001};
 
 			// add force to acceleration
-			// s2.acc.x+=force.x; s2.acc.y+=force.y;
-			s1.acc.x-=force.x; s1.acc.y-=force.y;
+			s2.acc.x+=force.x; s2.acc.y+=force.y;
+			// s1.acc.x-=force.x; s1.acc.y-=force.y;
 
 			s1.update(); s2.update();
 		}
