@@ -125,7 +125,7 @@ function loop() {
 			spawnType = Math.floor(Math.random()*3);
 			spawns.push([]);
 		}
-		if(hand.pinch > 0.7) {
+		if(hand.pinch > 0.9) {
 			handState = "pinching";
 			spawnState = "spawning";
 			spawnSource = "hand";
@@ -387,23 +387,26 @@ Leap.loop(controllerOptions, function(frame) {
 			} else if(gesture.type=="swipe") {
 				var isHorizontal = Math.abs(gesture.direction[0]) > Math.abs(gesture.direction[1]);
 				//Classify as right-left or up-down
+				let mySwipe = {x:0, y:0};
 				if(isHorizontal){
+				   
 				  if(gesture.direction[0] > 0){
 				      swipeDirection = "right";
-				      swipe({x:1, y:0});
+				      mySwipe.x = 1;
 				  } else {
 				      swipeDirection = "left";
-				      swipe({x:-1, y:0});
+				      mySwipe.x = -1;
 				  }
 				} else { //vertical
 				  if(gesture.direction[1] > 0){
 				      swipeDirection = "up";
-				      // swipe({x:0, y:-1});
+				      mySwipe.y = -1;
 				  } else {
 				      swipeDirection = "down";
-				      // swipe({x:0, y:1});
-				  }                  
+				      mySwipe.y = 1;
+				  }        
 				}
+				  swipe(mySwipe);          
 	        }
 	    });
 	}
