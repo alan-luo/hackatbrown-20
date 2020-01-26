@@ -211,6 +211,29 @@ function loop() {
 
 }
 
+function explodeFrom(center) {
+	for(i in spawns) {
+		for(j in spawns[i]) {
+
+			let mySpawn = spawns[i][j];
+			let myPos = {x: mySpawn.pos.x, y: mySpawn.pos.y};
+			console.log(dist(center, myPos));
+			if(dist(center, myPos)<300) {
+				let vec = {x: myPos.x - center.x, y: myPos.y - center.y};
+				let len = dist({x:0, y:0}, vec);
+				let normVec = {x: vec.x/len, y: vec.y/len};
+				console.log(normVec);
+
+				mySpawn.vel.x = normVec.x*100;
+				mySpawn.vel.y = normVec.y*100;
+			}
+		}
+	}
+}
+$(document).keypress(function(e) {
+	if(e.keyCode == 120) explodeFrom({x:mouse.pos.x, y:mouse.pos.y});
+})
+
 
 
 
